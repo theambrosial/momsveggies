@@ -1,0 +1,7 @@
+**/__pycache__
+**/.idea
+**/migrations
+**/venv
+Hsco/settings.py
+
+
