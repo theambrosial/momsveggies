@@ -61,7 +61,7 @@
 		Have a coupon? <a href="https://websitedemos.net/organic-shop-02/checkout/#" class="showcoupon">Click here to enter your code</a>	</div>
 </div>
 
-<form class="checkout_coupon woocommerce-form-coupon" method="post" style="display:none">
+<form class="checkout_coupon woocommerce-form-coupon" method="post" style="display:none">{% csrf_token %}
 
 	<p>If you have a coupon code, please apply it below.</p>
 
@@ -76,7 +76,7 @@
 	<div class="clear"></div>
 </form>
 <div class="woocommerce-notices-wrapper"></div>
-<form name="checkout" method="post" class="checkout woocommerce-checkout" action="https://websitedemos.net/organic-shop-02/checkout/" enctype="multipart/form-data" novalidate="novalidate">
+<form name="checkout" method="post" class="checkout woocommerce-checkout" action="/payment" enctype="multipart/form-data" novalidate="novalidate">{% csrf_token %}
 
 	
 		
@@ -128,28 +128,33 @@
 		</tr>
 	</thead>
 	<tbody>
-						<tr class="cart_item">
-					<td class="product-name">
-						Assorted Dry Fruits&nbsp;						 <strong class="product-quantity">×&nbsp;1</strong>											</td>
-					<td class="product-total">
-						<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>15.00</span>					</td>
-				</tr>
+	{% for item in cart_objs %}
+		<tr class="cart_item">
+			<td class="product-name">
+				{{item.product.name}}&nbsp;						 <strong class="product-quantity">×&nbsp;{{item.product_quantity}}</strong>											</td>
+			<td class="product-total">
+				<span class="woocommerce-Price-amount amount">
+				<span class="woocommerce-Price-currencySymbol">Rs.</span>{{item.product_cost}}</span>
+			</td>
+		</tr>
+	{% endfor %}
 					</tbody>
 	<tfoot>
 
-		<tr class="cart-subtotal">
-			<th>Subtotal</th>
-			<td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>15.00</span></td>
-		</tr>
+		<!--<tr class="cart-subtotal">-->
+			<!--<th>Subtotal</th>-->
+			<!--<td>-->
+				<!--<span class="woocommerce-Price-amount amount">-->
+				<!--<span class="woocommerce-Price-currencySymbol">Rs.</span>{{total_product_cost}}</span></td>-->
+		<!--</tr>-->
 
-		
-		
-		
-		
-		
 		<tr class="order-total">
 			<th>Total</th>
-			<td><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>15.00</span></strong> </td>
+			<td><strong>
+				<span class="woocommerce-Price-amount amount">
+					<span class="woocommerce-Price-currencySymbol">Rs.</span>{{total_product_cost}}</span>
+					<input type="hidden" name="total_product_cost" value="{{total_product_cost}}">
+			</strong></td>
 		</tr>
 
 		
@@ -187,7 +192,7 @@
 			</div>
 	
 		
-		<button type="submit" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="Place order" data-value="Place order">Place order</button>
+		<button type="submit" onclick="location.href='/payment'" class="button alt" name="woocommerce_checkout_place_order" id="place_order_" value="Place order" data-value="Place order">Place order</button>
 		
 		<input type="hidden" id="woocommerce-process-checkout-nonce" name="woocommerce-process-checkout-nonce" value="5d8f81685a"><input type="hidden" name="_wp_http_referer" value="/organic-shop-02/?wc-ajax=update_order_review">	</div>
 </div>

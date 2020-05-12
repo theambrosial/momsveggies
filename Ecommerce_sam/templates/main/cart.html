@@ -24,8 +24,7 @@
 
 <body itemtype='https://schema.org/WebPage' itemscope='itemscope' class="page-template-default page page-id-97 wp-custom-logo theme-astra woocommerce-cart woocommerce-page woocommerce-no-js ehf-footer ehf-template-astra ehf-stylesheet-astra ast-desktop ast-separate-container ast-two-container ast-no-sidebar astra-2.4.3 ast-header-custom-item-outside ast-single-post ast-woocommerce-cart-menu ast-replace-site-logo-transparent ast-inherit-site-logo-transparent ast-normal-title-enabled elementor-default elementor-kit-3049 astra-addon-2.4.1">
 
-<div
-	class="hfeed site" id="page">
+<div class="hfeed site" id="page">
 	<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
 
  {% include 'base_templates/navbar.html' %}
@@ -58,15 +57,137 @@
 
 		<h1 class="entry-title" itemprop="headline">Cart</h1>	</header><!-- .entry-header -->
 
-	<div class="entry-content clear"
-		itemprop="text"	>
+
+<div class="entry-content clear" itemprop="text">
 
 
-		<div class="woocommerce"><div class="woocommerce-notices-wrapper"></div><p class="cart-empty woocommerce-info">Your cart is currently empty.</p>	<p class="return-to-shop">
-		<a class="button wc-backward" href="../shop/index.html">
-			Return to shop		</a>
-	</p>
-</div>
+		<div class="woocommerce">
+
+			<div class="woocommerce-notices-wrapper"></div>
+			{% if cart_item_exist %}
+
+<form class="woocommerce-cart-form" action="https://websitedemos.net/organic-shop-02/cart/" method="post">
+
+	<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
+		<thead>
+			<tr>
+				<th class="product-remove">&nbsp;</th>
+				<th class="product-thumbnail">&nbsp;</th>
+				<th class="product-name">Product</th>
+				<th class="product-price">Price</th>
+				<th class="product-quantity">Quantity</th>
+				<th class="product-subtotal">Subtotal</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for item in cart_objs %}
+			<tr class="woocommerce-cart-form__cart-item cart_item">
+
+				<td class="product-remove">
+				<a href="https://websitedemos.net/organic-shop-02/cart/?remove_item=006f52e9102a8d3be2fe5614f42ba989&amp;_wpnonce=a9cab8fc1f" class="remove" aria-label="Remove this item" data-product_id="168" data-product_sku="">×</a>						</td>
+
+				<td class="product-thumbnail">
+				<a href="/product_detail/{{item.product.slug}}">
+					<img width="300" height="300" src="{{item.product.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="{{item.product.product_image.url}} 300w, {{item.product.product_image.url}} 150w, {{item.product.product_image.url}} 768w, {{item.product.product_image.url}} 600w, {{item.product.product_image.url}} 100w, {{item.product.product_image.url}} 1000w" sizes="(max-width: 300px) 100vw, 300px">
+				</a>
+				</td>
+
+				<td class="product-name" data-title="Product">
+				<a href="/product_detail/{{item.product.slug}}">{{item.product.name}}</a>
+				</td>
+
+				<td class="product-price" data-title="Price">
+				<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rs.</span>{{item.product.selling_cost}}/{{item.product.selling_unit}}</span>
+				</td>
+
+				<td class="product-quantity" data-title="Quantity">
+					<div class="quantity">
+						<label class="screen-reader-text" for="quantity_5eba32b74e120">{{item.product.name}} quantity</label>
+						<input type="number" id="quantity_5eba32b74e120" class="input-text qty text" step="1" min="0" max="" name="cart[006f52e9102a8d3be2fe5614f42ba989][qty]" value="{{item.product_quantity}}" title="Qty" size="4" placeholder="" inputmode="numeric">
+					</div>
+				</td>
+
+				<td class="product-subtotal" data-title="Subtotal">
+				<span class="woocommerce-Price-amount amount">
+					<span class="woocommerce-Price-currencySymbol">Rs.</span>{{item.product_cost}}</span>
+				</td>
+
+			</tr>
+{% endfor %}
+
+			<tr>
+				<td colspan="6" class="actions">
+
+				<div class="coupon">
+				<label for="coupon_code">Coupon:</label>
+					<input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code">
+					<button type="submit" class="button" name="apply_coupon" value="Apply coupon">Apply coupon</button>
+				</div>
+
+				<button type="submit" class="button" name="update_cart" value="Update cart" disabled="">Update cart</button>
+
+
+				<input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="a9cab8fc1f">
+					<input type="hidden" name="_wp_http_referer" value="/organic-shop-02/cart/">
+				</td>
+			</tr>
+
+					</tbody>
+	</table>
+	</form>
+
+
+	<div class="cart-collaterals">
+		<div class="cart_totals ">
+
+
+		<h2>Cart totals</h2>
+
+		<table cellspacing="0" class="shop_table shop_table_responsive">
+
+			<tbody>
+			<!--<tr class="cart-subtotal">-->
+				<!--<th>Subtotal</th>-->
+				<!--<td data-title="Subtotal">-->
+					<!--<span class="woocommerce-Price-amount amount">-->
+						<!--<span class="woocommerce-Price-currencySymbol">Rs.</span>455.00</span></td>-->
+			<!--</tr>-->
+
+
+
+
+
+
+			<tr class="order-total">
+				<th>Total</th>
+				<td data-title="Total">
+					<strong>
+						<span class="woocommerce-Price-amount amount">
+							<span class="woocommerce-Price-currencySymbol">Rs.</span>{{total_product_cost}}</span>
+					</strong>
+				</td>
+			</tr>
+
+
+		</tbody></table>
+
+		<div class="wc-proceed-to-checkout">
+
+	<a href="/checkout/" class="checkout-button button alt wc-forward">
+		Proceed to checkout</a>
+		</div>
+
+
+	</div>
+	</div>
+
+			{% else %}
+			<p class="cart-empty woocommerce-info">Your cart is currently empty.</p>
+			<p class="return-to-shop">
+				<a class="button wc-backward" href="/">Return to shop		</a>
+			</p>
+			{% endif %}
+	</div>
 
 
 

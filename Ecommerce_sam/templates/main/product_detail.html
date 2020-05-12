@@ -11,7 +11,7 @@
 
 
 
-<title>Assorted Coffee - Organic Store</title>
+<title>{{product.name}} - Organic Store</title>
 <meta name="robots" content="index, follow" />
 <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
@@ -28,25 +28,44 @@
 <div id="primary" class="content-area primary">
 <main id="main" class="site-main">
 <div class="ast-woocommerce-container">
-<div class="woocommerce-notices-wrapper"></div><div id="product-168" class="ast-article-single ast-woo-product-no-review product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
+<div class="woocommerce-notices-wrapper">
+    {% if request.session.in_cart %}
+	<div class="woocommerce-message" role="alert">
+		<a href="/cart" tabindex="1" class="button wc-forward">View cart</a>
+        “{{product.name}}” has been added to your cart.
+    </div>
+  {% endif %}
+</div>
+
+    <div id="product-168" class="ast-article-single ast-woo-product-no-review product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
 <div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4" style="opacity: 0; transition: opacity .25s ease-in-out;">
 <figure class="woocommerce-product-gallery__wrapper">
-<div data-thumb="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img-100x100.jpg" data-thumb-alt="" class="woocommerce-product-gallery__image"><a href="../../wp-content/uploads/sites/465/2018/06/product25-free-img.jpg"><img width="600" height="600" src="../../wp-content/uploads/sites/465/2018/06/product25-free-img-600x600.jpg" class="wp-post-image" alt="" title="product25-free-img" data-caption="" data-src="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img.jpg" data-large_image="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img.jpg" data-large_image_width="1000" data-large_image_height="1000" srcset="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img-600x600.jpg 600w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img-150x150.jpg 150w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img-300x300.jpg 300w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img-768x768.jpg 768w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img-100x100.jpg 100w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product25-free-img.jpg 1000w" sizes="(max-width: 600px) 100vw, 600px" /></a></div> </figure>
+<div data-thumb="{{product.product_image.url}}" data-thumb-alt="" class="woocommerce-product-gallery__image">
+    <a href="{{product.product_image.url}}">
+        <img width="600" height="600" src="{{product.product_image.url}}" class="wp-post-image" alt="" title="product25-free-img" data-caption="" data-src="{{product.product_image.url}}" data-large_image="{{product.product_image.url}}" data-large_image_width="1000" data-large_image_height="1000" sizes="(max-width: 600px) 100vw, 600px" /></a></div> </figure>
 </div>
 <div class="summary entry-summary">
-<nav class="woocommerce-breadcrumb"><a href="https://websitedemos.net/organic-shop-02">Home</a>&nbsp;&#47;&nbsp;<a href="../../product-category/groceries/index.html">Groceries</a>&nbsp;&#47;&nbsp;Assorted Coffee</nav><h1 class="product_title entry-title">Assorted Coffee</h1><p class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&pound;</span>35.00</span></p>
+<nav class="woocommerce-breadcrumb">
+    <a href="https://websitedemos.net/organic-shop-02">Home</a>&nbsp;&#47;&nbsp;
+    <a href="../../product-category/groceries/index.html">{{product.category.name}}</a>&nbsp;&#47;&nbsp;
+    {{product.name}}</nav><h1 class="product_title entry-title">{{product.name}}</h1>
+    <p class="price">
+        <span class="woocommerce-Price-amount amount">
+        <span class="woocommerce-Price-currencySymbol">Rs</span>{{product.selling_cost}}/{{product.selling_unit}}
+    </span></p>
 <div class="woocommerce-product-details__short-description">
-<p>Neque porro quisquam est, qui dolore ipsum quia dolor sit amet, consectetur adipisci velit, sed quia non incidunt lores ta porro ame. numquam eius modi tempora incidunt lores ta porro ame.</p>
+<p>{{product.product_description}}</p>
 </div>
-<form class="cart" action="https://websitedemos.net/organic-shop-02/product/assorted-coffee/" method="post" enctype='multipart/form-data'>
+<form class="cart" action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
 <div class="quantity">
 <label class="screen-reader-text" for="quantity_5eaf28b3672b7">Assorted Coffee quantity</label>
 <input type="number" id="quantity_5eaf28b3672b7" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" placeholder="" inputmode="numeric" />
+<input type="hidden" name="product_id" value="{{product.id}}">
 </div>
 <button type="submit" name="add-to-cart" value="168" class="single_add_to_cart_button button alt">Add to cart</button>
 </form>
 <div class="product_meta">
-<span class="posted_in">Category: <a href="../../product-category/groceries/index.html" rel="tag">Groceries</a></span>
+<span class="posted_in">Category: <a href="/" rel="tag">{{product.category.name}}</a></span>
 </div>
 </div>
 <div class="woocommerce-tabs wc-tabs-wrapper">
@@ -61,7 +80,7 @@ Reviews (0) </a>
 </li>
 </ul>
 <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab" id="tab-description" role="tabpanel" aria-labelledby="tab-title-description">
-<p>Neque porro quisquam est, qui dolore ipsum quia dolor sit amet, consectetur adipisci velit, sed quia non incidunt lores ta porro ame. numquam eius modi tempora incidunt lores ta porro ame.</p>
+<p>{{product.product_description}}</p>
 </div>
 <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--reviews panel entry-content wc-tab" id="tab-reviews" role="tabpanel" aria-labelledby="tab-title-reviews">
 <div id="reviews" class="woocommerce-Reviews">
@@ -92,31 +111,31 @@ Reviews </h2>
 </div>
 </div>
 </div>
-<section class="related products">
-<h2>Related products</h2>
-<ul class="products columns-4">
-<li class="ast-article-single ast-woo-product-no-review product type-product post-161 status-publish first instock product_cat-groceries has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
-<div class="astra-shop-thumbnail-wrap">
-<span class="onsale">Sale!</span>
-<a href="../kidney-beans-organic/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="300" height="300" src="../../wp-content/uploads/sites/465/2018/06/product29-free-img-300x300.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product29-free-img-300x300.jpg 300w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product29-free-img-150x150.jpg 150w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product29-free-img-768x768.jpg 768w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product29-free-img-600x600.jpg 600w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product29-free-img-100x100.jpg 100w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product29-free-img.jpg 1000w" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="astra-shop-summary-wrap"> <span class="ast-woo-product-category">
-Groceries </span>
-<a href="../kidney-beans-organic/index.html" class="ast-loop-product__link"><h2 class="woocommerce-loop-product__title">Kidney Beans Organic</h2></a><div class="star-rating"><span style="width:0%">Rated <strong class="rating">0</strong> out of 5</span></div>
-<span class="price"><del><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&pound;</span>35.00</span></del> <ins><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&pound;</span>25.00</span></ins></span>
-</div></li>
-<li class="ast-article-single ast-woo-product-no-review product type-product post-167 status-publish instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
-<div class="astra-shop-thumbnail-wrap"><a href="../black-lentils/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="300" height="300" src="../../wp-content/uploads/sites/465/2018/06/product26-free-img-300x300.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product26-free-img-300x300.jpg 300w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product26-free-img-150x150.jpg 150w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product26-free-img-768x768.jpg 768w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product26-free-img-600x600.jpg 600w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product26-free-img-100x100.jpg 100w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product26-free-img.jpg 1000w" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="astra-shop-summary-wrap"> <span class="ast-woo-product-category">
-Groceries </span>
-<a href="../black-lentils/index.html" class="ast-loop-product__link"><h2 class="woocommerce-loop-product__title">Black Lentils</h2></a><div class="star-rating"><span style="width:0%">Rated <strong class="rating">0</strong> out of 5</span></div>
-<span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&pound;</span>34.00</span></span>
-</div></li>
-<li class="ast-article-single ast-woo-product-no-review product type-product post-160 status-publish instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
-<div class="astra-shop-thumbnail-wrap"><a href="../organic-pigeon-peas/index.html" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="300" height="300" src="../../wp-content/uploads/sites/465/2018/06/product24-free-img-300x300.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" srcset="https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product24-free-img-300x300.jpg 300w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product24-free-img-150x150.jpg 150w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product24-free-img-768x768.jpg 768w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product24-free-img-600x600.jpg 600w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product24-free-img-100x100.jpg 100w, https://websitedemos.net/organic-shop-02/wp-content/uploads/sites/465/2018/06/product24-free-img.jpg 1000w" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="astra-shop-summary-wrap"> <span class="ast-woo-product-category">
-Groceries </span>
-<a href="../organic-pigeon-peas/index.html" class="ast-loop-product__link"><h2 class="woocommerce-loop-product__title">Organic Pigeon Peas</h2></a><div class="star-rating"><span style="width:0%">Rated <strong class="rating">0</strong> out of 5</span></div>
-<span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&pound;</span>35.00</span></span>
-</div></li>
-</ul>
-</section>
+    <section class="related products">
+        <h2>Related products</h2>
+        <ul class="products columns-4">
+            {% for item in recmonded_products %}
+        <li class="ast-article-single ast-woo-product-no-review product type-product post-161 status-publish first instock product_cat-groceries has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
+            <div class="astra-shop-thumbnail-wrap">
+                {% if item.offer %}
+            <span class="onsale">Sale!</span>
+                {% endif %}
+            <a href="/product_detail/{{item.slug}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                <img width="300" height="300" src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" sizes="(max-width: 300px) 100vw, 300px" /></a></div>
+            <div class="astra-shop-summary-wrap"> <span class="ast-woo-product-category">
+            {{item.category.name}} </span>
+            <a href="/product_detail/{{item.slug}}" class="ast-loop-product__link">
+                <h2 class="woocommerce-loop-product__title">{{item.name}}</h2></a>
+                <div class="star-rating"><span style="width:0%">Rated <strong class="rating">{{item.ratings}}</strong> out of 5</span></div>
+            <span class="price"><del><span class="woocommerce-Price-amount amount">
+                <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.rule_out_cost}}/{{item.selling_unit}}</span>
+            </del> <ins><span class="woocommerce-Price-amount amount">
+                <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span></ins></span>
+            </div>
+        </li>
+            {% endfor %}
+        </ul>
+    </section>
 </div>
 </div>
 </main>

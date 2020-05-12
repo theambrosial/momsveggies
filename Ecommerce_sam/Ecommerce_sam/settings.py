@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_app',
+    'product_app',
+    'cart_app',
+    'orders_app',
+    'checkout_app',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart_app.views.notification_context',
             ],
         },
     },
@@ -132,3 +137,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn", "static_root")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
+
+
+KEY_ID_RAZORPAY="rzp_test_Pma8Ps4jKf2lyp"
+KEY_SECRET_RAZORPAY="dpBuImsWN9tJPlddRzR5Grno"
