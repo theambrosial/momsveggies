@@ -1,5 +1,6 @@
 import hmac
 
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Sum
@@ -26,27 +27,42 @@ def checkout(request):
 
 def payment(request):
     if request.method == 'POST' and 'csrfmiddlewaretoken' in request.POST and 'total_product_cost' in request.POST:
+        # Creating User In The Database
+        from user_app.models import SiteUser
+        generated_password = str(request.POST.get('billing_first_name'))[:3]+str(request.POST.get('billing_phone'))[5:]
+        user = SiteUser()
+        user.email = request.POST.get('billing_email')
+        user.set_password(generated_password)
+        user.mobile = request.POST.get('billing_phone')
+        user.first_name = request.POST.get('billing_first_name')
+        user.last_name = request.POST.get('billing_last_name')
+        user.password_text = generated_password
+        user.save()
+        # Logging User In System
+        user = authenticate(request, mobile=request.POST.get('billing_phone'), password=generated_password)
+        if user is not None:
+            login(request, user)
+
+        # Emailing Credentials To The User
+        from common_utilities.email_utility import send_html_mail
+        html_content='''
+        <p>UserName : '''+request.POST.get('billing_phone')+'''</p>
+        <p>Password : '''+generated_password+'''</p>
+        <p> Thank You</p>
+        '''
+        send_html_mail('Account Created - Moms Veggies',html_content)
+        #Creating RayzorPay Order
         client = razorpay.Client(auth=(settings.KEY_ID_RAZORPAY, settings.KEY_SECRET_RAZORPAY))
         client.set_app_details({"title": "Moms_Veggies", "version": "0.1"})
-
-
         DATA = {"amount": int(float(str(request.POST.get('total_product_cost'))))*100,
                 "currency": "INR",
                 "receipt": 'order_rcptid_11',
-                "payment_capture": "1",
-                "notes": {
-                    "business_id": 'no',
-
-                }
-                }
-
+                "payment_capture": "1",}
         order_id_razorpay=client.order.create(data=DATA)
-        print(order_id_razorpay['id'])
-        print(order_id_razorpay)
-
 
         if 'available_cart_pk' in request.session:
             cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(id=request.session['available_cart_pk'],is_payment_done=False).id)
+            cart_objs.update(user_id = request.user.id)
             cart_item_exist = True if cart_objs.count()>0 else False
             total_product_cost = cart_objs.aggregate(Sum('product_cost'))
         elif request.user.is_authenticated :
@@ -72,22 +88,14 @@ def payment_confirmation(request):
         razorpay_payment_id = request.POST.get('razorpay_payment_id')
         razorpay_order_id = request.POST.get('razorpay_order_id')
         razorpay_signature = request.POST.get('razorpay_signature')
-        print("razorpay_order_id + + razorpay_payment_id + + settings.KEY_SECRET_RAZORPAY:")
-        print(razorpay_order_id + "|" + razorpay_payment_id + "|" + settings.KEY_SECRET_RAZORPAY)
-        print(":razorpay_signature:")
-        print(razorpay_signature)
+        # Veryfing Payment Status by matching razorpay signature
         import hashlib
         key = bytes(settings.KEY_SECRET_RAZORPAY, 'utf-8')
         msg = "{}|{}".format(razorpay_order_id, razorpay_payment_id)
         body = bytes(msg, 'utf-8')
-
-        dig = hmac.new(key=key,
-                       msg=body,
-                       digestmod=hashlib.sha256)
-
+        dig = hmac.new(key=key,msg=body,digestmod=hashlib.sha256)
         generated_signature = dig.hexdigest()
-        print(":generated_signature:")
-        print(generated_signature)
+
         if (generated_signature == razorpay_signature):
             print("payment is Successful")
             payment = True
@@ -95,8 +103,6 @@ def payment_confirmation(request):
             print("payment is Unsuccessful")
             payment = False
 
-
-        import razorpay
         client = razorpay.Client(auth=(settings.KEY_ID_RAZORPAY, settings.KEY_SECRET_RAZORPAY))
         data=client.payment.fetch(razorpay_payment_id)
         if payment and data['order_id']==razorpay_order_id and data['id']==razorpay_payment_id and data['status']== 'captured' and data['error_code'] == None:
