@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  {% load static %}
+<!-- Mirrored from websitedemos.net/organic-shop-02/shop/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 03 May 2020 20:26:15 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+
+<title>Shop - Organic Store</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
+<link rel='dns-prefetch' href='http://s.w.org/' />
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.4.2/Sortable.min.js"></script>
+
+
+
+<style>
+.panel-heading, .panel-body {
+   border-radius: 0px;
+}
+.panel-default >.panel-heading {
+   background-color: #73C92D;
+   text-transform: uppercase;
+   font-weight: 500;
+}
+.nav-tabs {
+   border-bottom: none;
+}
+.nav-tabs>li.active>a {
+      &:after {
+       position: absolute;
+       content: " ";
+       background: #73C92D;
+       width: 12px;
+       height: 12px;
+       border-radius: 3px 0 0 0;
+       -webkit-transform: rotate(45deg);
+       -ms-transform: rotate(45deg);
+       transform: rotate(45deg);
+       box-shadow: none;
+       bottom: -60%;
+       right: 50%;
+    }
+}
+.nav-tabs>li>a {
+   color: white;
+   border: 1px solid transparent;
+   border-right: 2px solid white;
+   border-radius: 0px;
+   padding: 3px 20px;
+   &:hover {
+      background-color: transparent;
+      border: 1px solid transparent;
+      border-right: 2px solid white;
+   }
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+   color: black;
+   cursor: pointer;
+   background-color: transparent;
+   border: 1px solid transparent;
+   border-right: 2px solid white;
+}
+
+ul.asset-list {
+    margin: 20px 0px 0px 0px;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+    li.photo {
+        list-style: none;
+        box-shadow: 0 0 1px #00a6e1;
+        display: inline-block;
+        margin: 10px;
+        cursor: pointer;
+        .asset-loading {
+            width: 170px;
+            position: relative;
+            text-align: center;
+           img {
+              max-width: 170px;
+           }
+        }
+        .cta-delete {
+            position: absolute;
+            z-index: 100;
+            top: 5px;
+            right: 5px;
+            color: white;
+            cursor: pointer;
+            i {
+                font-size: 20px;
+            }
+           &.video {
+              top: 35%;
+              left: 35%;
+              color: #e40046;
+              opacity: 0.7;
+              height: 35px;
+              width: 35px;
+              border: 2px solid transparent;
+              border-radius: 50%;
+              padding-top: 5px;
+              padding-left: 5px;
+              background-color: #e40046;
+              i {
+                 font-size: 20px;
+                 color: white;
+              }
+           }
+        }
+    }
+}
+.btn.flat {
+    border: none;
+    color: white;
+    text-shadow: none;
+    border-radius: 0px;
+    min-width: 160px;
+}
+
+.btn.flat.btn-default {
+    background: #38a9de;
+    padding: 12px 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.btn.flat.btn-submit {
+    background: #e40046;
+    padding: 12px 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.btn.flat.btn-create {
+    background: #e40046;
+    padding: 12px 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.btn-small {
+    padding: 12px 30px !important;
+}
+
+.btn.flat.btn-chat-submit,
+.btn.flat.btn-pitch-chat-submit {
+    background: #E40046;
+    padding: 8px 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    min-width: 50px;
+}
+
+.btn.Previous {
+    background: #eee !important;
+    color: #333 !important;
+    border: solid 1px #aaa;
+}
+
+.btn.Next {
+    width: 130px;
+    border-radius: 0px !important;
+}
+
+.btn-Upload-group {
+    margin: 10px auto;
+    padding: 5px;
+}
+
+.btn.flat.Upload {
+    background: white;
+    border: solid 1px #E40046;
+    color: #E40046;
+    font-size: 13px;
+    margin-left: 10px;
+}
+.actions {
+   margin: 50px 10px;
+}
+.modal-body.payment {
+    padding: 20px 30px;
+    margin: 0 auto;
+    h3.title {
+        font-size: 1.8em;
+        color: #e40046;
+        text-align: center;
+        font-weight: 500;
+        margin: 20px 0;
+    }
+    button.close {
+        color: #e40046;
+        font-size: 23px;
+        padding-bottom: 15px;
+        width: 30px;
+        height: 30px;
+        border: solid 2px #e40046;
+        border-radius: 50%;
+        margin-top: 5px;
+        margin-right: 5px;
+    }
+    p {
+        font-size: 16px;
+        text-align: center;
+        padding: 0 1.5em;
+    }
+   input.input-form {
+      width: 100%;
+      padding: 5px 0;
+      margin: 10px 0;
+   }
+   .add-link {
+      text-align: left;
+      a {
+         color: #e40046;
+         margin-left: -20px;
+      }
+   }
+   .actions {
+      text-align: center;
+   }
+}
+// Dropdown
+ul.nav {
+  list-style: none;
+   li {
+      display: inline-block;
+      //Notifications
+      &.message-nav {
+         float: right;
+         margin-right: 20px;
+         a {
+            color: black;
+            background-color: white;
+            &:hover, &.open, &.focus, &.active{
+               cursor: pointer;
+               color: #e40046;
+               background-color: white;
+            }
+         }
+         i {
+            font-size: 20px;
+         }
+      }
+      //Filter Sort
+      &.filter-sort {
+         float: right;
+         margin-right: 20px;
+         a {
+            font-size: 18px;
+            color: black;
+            background-color: white;
+            &:hover, &.open, &.focus, &.active{
+               cursor: pointer;
+               color: #e40046;
+               background-color: white;
+               text-decoration: none;
+            }
+         }
+      }
+   }
+}
+.dropdown-menu {
+    padding: 0;
+    margin: 0;
+    background: white;
+    min-width: 200px;
+    width: 370px;
+    position: absolute;
+    top: 50px;
+    display: none;
+    z-index: 100;
+    border-radius: 0px;
+    &.sorting {
+       width: 250px;
+    }
+    &:before {
+       position: absolute;
+       content: "";
+       background: #fff;
+       width: 12px;
+       height: 12px;
+       border-radius: 3px 0 0 0;
+       -webkit-transform: rotate(45deg);
+       -ms-transform: rotate(45deg);
+       transform: rotate(45deg);
+       box-shadow: -1px -1px 1px rgba(2,2,4,0.2);
+       top: -6px;
+       right: 12px;
+    }
+    li {
+      width: 100%;
+      &.notification-title {
+         text-transform: uppercase;
+         color: black;
+         font-weight: 500;
+         font-size: 18px;
+         padding: 5px 20px;
+         margin: 5px auto 5px;
+      }
+      &.notification-footer {
+         text-transform: uppercase;
+         color: black;
+         font-weight: 500;
+         font-size: 18px;
+         padding: 5px 20px;
+         margin: -5px auto 5px;
+         border-top: solid 1px rgba(151,151,151,.8);
+         a:hover {text-decoration:none;}
+      }
+   }
+    ul.notification-list {
+       li.notification-item {
+          padding: 5px 25px;
+          margin-left: -35px;
+          margin-right: 0px;
+          width: 360px;
+          border-top: solid 1px rgba(151,151,151,.8);
+         }
+         a.notification-anchor {
+            display: block;
+            clear: both;
+            &:hover {
+               text-decoration: none;
+            }
+         }
+        .notification-anchor {
+           span.notification-img {
+              float: left;
+              margin-right: 10px;
+              height: 80px;
+              padding-top: 5px;
+              img {
+                 border-radius: 50%;
+                 width: 60px;
+                 height: 60px;
+              }
+           }
+           p {
+              margin-bottom: 0px;
+              color: #8D8D8D;
+              font-size: 14px;
+              &.notification-type {
+                 font-size: 16px;
+                 color: #E63A45;
+              }
+              &.notification-project {
+                 font-style: italic;
+              }
+           }
+        }
+      }
+    ul.filter-sort-list {
+       padding: 10px;
+       li {
+          padding: 5px;
+
+       }
+    }
+}
+
+.skill-zone {
+   .label {
+      margin-right: 5px;
+   }
+}
+
+.my-body{
+	height: fit-content;
+	background:#F5F5F5;
+	border:1px solid lightgray;
+	font-family:sans-serif
+}
+.nav-bar{
+    background: #131F97;
+    color: white;
+    padding: 0.3em;
+    font-weight: 700;
+    font-size: large;
+}
+.my-logo{
+	margin-left: 2em;
+}
+.my-options{
+	margin-right: 2em;
+	float: right;
+  position: relative;
+  bottom: 1em;
+}
+.my-icons{
+	border-right: 1px solid;
+	padding:0.2em;
+}
+.my-footer{
+	background:#212121;
+	color:gainsboro;
+	padding:1em;
+}
+.footer-wraper{
+	display:flex;
+	position: relative;
+  left: 12em;
+}
+.my-status{
+	padding:1em;
+	box-shadow: 1px 4px 20px 1px lightgrey;
+}
+.cart-body{
+	padding:1em;
+}
+.my-notification{
+	margin:0 auto;
+	padding:0.4em;
+	border-radius:0.2em;
+	text-align:center;
+	width:80%;
+	background:#848AC6;
+	color:white;
+}
+.my-cart-list{
+	position:relative;
+	padding:0.4em;
+	background:white;
+	border:1px solid lightgray;
+	border-radius:0.2em;
+	box-shadow: 0px 0px 4px 0px lightgrey;
+}
+.my-cart-header{
+	padding:0.2em;
+	display: flex;
+  flex-wrap: wrap;
+	border-bottom:1px solid lightgray;
+	font-weight:700;
+}
+.my-cart-body{
+	padding:0.4em;
+}
+.my-item-details{
+	display: flex;
+  flex-wrap: wrap;
+	padding: 0.8em;
+  background: #f5f5f5;
+	border-radius:2px;
+	box-shadow:0px 0px 1px 1px lightgrey;
+}
+.my-cart-body .my-item-details:not(:first-child) {
+    margin-top:0.4em;
+}
+.fourty{
+	width:40%;
+}
+.twenty{
+	width:20%;
+}
+.input-quantity{
+	text-align: center;
+}
+.remove-item-span{
+	position:relative;
+	left:1em;
+}
+.remove-item-button{
+	background:red;
+	border:0;
+	color:white;
+	padding:0.3em;
+	border-radius:4px
+}
+.my-item-image{
+		width: 60px;
+    height: 65px;
+}
+/* External css file */
+.navigation_menu {
+  width: 100%;
+}
+
+.navigation_tabs {
+   counter-reset: step;
+}
+
+/* one item */
+.navigation_tabs li:first-child:nth-last-child(1) {
+  width: 100%;
+}
+
+/* two items */
+.navigation_tabs li:first-child:nth-last-child(2),
+.navigation_tabs li:first-child:nth-last-child(2) ~ li {
+  width: 49%;
+}
+
+/* three items */
+.navigation_tabs li:first-child:nth-last-child(3),
+.navigation_tabs li:first-child:nth-last-child(3) ~ li {
+  width: 30.3333%;
+}
+
+/* four items */
+.navigation_tabs li:first-child:nth-last-child(4),
+.navigation_tabs li:first-child:nth-last-child(4) ~ li {
+  width: 24%;
+}
+
+/* five items */
+.navigation_tabs li:first-child:nth-last-child(5),
+.navigation_tabs li:first-child:nth-last-child(5) ~ li {
+  width: 19%;
+}
+
+/* six items */
+.navigation_tabs li:first-child:nth-last-child(6),
+.navigation_tabs li:first-child:nth-last-child(6) ~ li {
+  width: 16%;
+}
+
+.navigation_tabs li {
+  list-style: none;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+}
+
+a {
+  color: #000;
+}
+
+.navigation_tabs li a {
+  text-decoration: none;
+}
+
+.navigation_tabs li:before {
+  content: counter(step);
+  counter-increment: step;
+  width: 30px;
+  height: 30px;
+  line-height : 30px;
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  background-color: #fff;
+}
+.navigation_tabs li:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  background-color: #ddd;
+  top: 13px;
+  left: -50%;
+  z-index : -1;
+}
+
+.navigation_tabs li:first-child:after {
+  content: none;
+}
+
+.navigation_tabs li.tab_active,
+.navigation_tabs li.tab_inactive,
+.navigation_tabs li.tab_active a,
+.navigation_tabs li.tab_inactive a{
+  color: green;
+}
+
+.navigation_tabs li.tab_active a:hover,
+.navigation_tabs li.tab_inactive a:hover {
+  font-weight: bold;
+}
+
+
+.navigation_tabs li.tab_active:before {
+  border-color: green;
+}
+
+.navigation_tabs li.tab_inactive:before {
+  border-color: green;
+  background-color: green;
+  color: #fff;
+  content: "\2713";
+}
+
+
+.navigation_tabs li.tab_inactive + li:after {
+  background-color: green;
+}
+/* Totals section */
+.totals .totals-item {
+  float: right;
+  clear: both;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.totals .totals-item label {
+  float: left;
+  clear: both;
+  width: 79%;
+  text-align: right;
+}
+.totals .totals-item .totals-value {
+  float: right;
+  width: 21%;
+  text-align: right;
+}
+.totals .totals-item-total {
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium";
+}
+/* External css file */
+</style>
+</head>
+<body class="archive post-type-archive post-type-archive-product wp-custom-logo theme-astra woocommerce woocommerce-page woocommerce-no-js ehf-footer ehf-template-astra ehf-stylesheet-astra ast-desktop ast-separate-container ast-two-container ast-no-sidebar astra-2.4.3 ast-header-custom-item-outside columns-3 tablet-columns-3 mobile-columns-1 ast-woo-shop-archive ast-woocommerce-cart-menu ast-replace-site-logo-transparent ast-inherit-site-logo-transparent elementor-default elementor-kit-3049 astra-addon-2.4.1">
+<div class="hfeed site" id="page">
+<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+ {% include 'base_templates/navbar.html' %}
+
+  <div class="container">
+      <div class="page-header">
+         <ul class="nav">
+            <li class="settings-title">
+               <h1>My Account</h1>
+            </li>
+            <!-- notification dropdown -->
+
+            <!-- end -->
+            <!-- Filter -->
+
+            <!-- end Filter -->
+         </ul>
+      </div>
+      <div class="row">
+         <div class="col-md-11">
+            <div class="panel with-nav-tabs panel-default">
+               <div class="panel-heading single-project-nav">
+                  <ul class="nav nav-tabs">
+                   <li class="active">
+                      <a href="#user-profile-info" data-toggle="tab">Profile</a>
+                   </li>
+                   <li>
+                      <a href="#user-profile-payments" data-toggle="tab" style="border-right: 0px;">Order History</a>
+                   </li>
+
+               </ul>
+            </div>
+               <div class="panel-body">
+                 <div class="tab-content">
+                  <div class="tab-pane fade in active" id="user-profile-info">
+                     <div class="row">
+                        <div class="col-sm-4">
+                           <label>First Name</label>
+                           <input type="text" class="input-md form-control">
+                        </div>
+                        <div class="col-sm-4">
+                           <label>Last Name</label>
+                           <input type="text" class="input-md form-control">
+                        </div>
+                        <div class="col-sm-4">
+                           <label>Email</label>
+                           <input type="text" class="input-md form-control">
+                        </div>
+                     </div>
+                     <div class="row">
+
+                        <div class="col-sm-4">
+                           <label>Contact Number</label>
+                           <input type="text" class="input-md form-control">
+                        </div>
+                     </div>
+              <div class="actions">
+                 <a class="btn flat btn-create">Save</a>
+              </div>
+                  </div>
+                  <div class="tab-pane fade" id="user-profile-payments">
+
+
+      <div class="cart-body">
+         <div class="my-cart-list">
+
+            <div class="my-cart-body">
+               <div class="my-item-details">
+                  <div class="fourty">
+                     <a href="#">
+                         <img src="https://www.landscapeduniya.com/media/subcategory_images/7015.webp" border="0" class="my-item-image" style="height: 120px; width: 120px;">
+                     </a>
+                  </div>
+                  <div class="twenty">Price: Rs. 40/kg</div>
+                  <div class="twenty">Quantity: 4</div>
+                  <div class="twenty">Total Price: Rs. 160
+
+                  </div>
+               </div>
+               <div class="my-item-details">
+                  <div class="fourty">
+                     <a href="#"><img src="https://www.landscapeduniya.com/media/subcategory_images/2236.webp" border="0" class="my-item-image" style="height: 120px; width: 120px;"></a>
+                  </div>
+                  <div class="twenty">Price: Rs. 40/kg</div>
+                  <div class="twenty">Quantity: 4</div>
+                  <div class="twenty">Total Price: Rs. 160
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+                  </div>
+
+              </div>
+
+         </div>
+         </div>
+         </div>
+      </div>
+   </div>
+<!-- modal -->
+
+
+</div>
+</main>
+</div>
+</div>
+</div>
+
+</div>
+    {% include 'base_templates/footer.html' %}
+</body>
+
+</html>
