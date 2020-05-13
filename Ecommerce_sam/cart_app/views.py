@@ -33,15 +33,19 @@ def notification_context(request):
             'cart_items_notif': cart_items_notif,
             'cart_item_count_notif': cart_item_count_notif,
         }
-    elif request.user.is_authenticated :
-        cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(user_id=request.user.id,is_payment_done=False).id)
-        cart_item_count_notif = cart_objs.count()
-        cart_items_notif = cart_objs
-        return {
-            'is_cart_items_notif': True,
-            'cart_items_notif': cart_items_notif,
-            'cart_item_count_notif': cart_item_count_notif,
-        }
+    # elif request.user.is_authenticated :
+    #     cart = Cart_model.objects.filter(user_id=request.user.id,is_payment_done=False)
+    #     if cart.count() >0:
+    #         for item in cart:
+    #             cart_id = item.id
+    #         cart_objs = Cart_products.objects.filter(cart_id=cart_id)
+    #         cart_item_count_notif = cart_objs.count()
+    #         cart_items_notif = cart_objs
+    #         return {
+    #             'is_cart_items_notif': True,
+    #             'cart_items_notif': cart_items_notif,
+    #             'cart_item_count_notif': cart_item_count_notif,
+    #         }
     else:
         return {
             'is_cart_items_notif': False,

@@ -10,10 +10,67 @@
 
 <title>Shop - Organic Store</title>
 
-
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
 <link rel='dns-prefetch' href='http://s.w.org/' />
+<style>
 
+.value-button {
+  display: inline-block;
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 6px 0;
+  background: #eee;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.value-button:hover {
+  cursor: pointer;
+}
+
+form #decrease {  height: 37px;
+  margin-top: -4px;
+  margin-right: -4px;
+  border-radius: 8px 0 0 8px;
+}
+
+form #increase {  height: 37px;
+  margin-left: -4px;
+  margin-top: -4px;
+  border-radius: 0 8px 8px 0;
+}
+
+form #input-wrap {
+  margin: 0px;
+  padding: 0px;
+}
+
+input#number {
+  text-align: center;
+  border: none;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 36.5px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+</style>
 </head>
 <body class="archive post-type-archive post-type-archive-product wp-custom-logo theme-astra woocommerce woocommerce-page woocommerce-no-js ehf-footer ehf-template-astra ehf-stylesheet-astra ast-desktop ast-separate-container ast-two-container ast-no-sidebar astra-2.4.3 ast-header-custom-item-outside columns-3 tablet-columns-3 mobile-columns-1 ast-woo-shop-archive ast-woocommerce-cart-menu ast-replace-site-logo-transparent ast-inherit-site-logo-transparent elementor-default elementor-kit-3049 astra-addon-2.4.1">
 <div class="hfeed site" id="page">
@@ -33,26 +90,44 @@
 Showing 1&ndash;9 of 12 results</p>
     <form class="woocommerce-ordering" method="get">
         <select name="orderby" class="orderby" aria-label="Shop order">
-        <option value="menu_order" selected='selected'>Default sorting</option>
-        <option value="popularity">Sort by popularity</option>
-        <option value="rating">Sort by average rating</option>
-        <option value="date">Sort by latest</option>
-        <option value="price">Sort by price: low to high</option>
-        <option value="price-desc">Sort by price: high to low</option>
+        <option value="menu_order" selected='selected'>Categories</option>
+<!--        <option value="popularity">Sort by popularity</option>-->
+<!--        <option value="rating">Sort by average rating</option>-->
+<!--        <option value="date">Sort by latest</option>-->
+<!--        <option value="price">Sort by price: low to high</option>-->
+<!--        <option value="price-desc">Sort by price: high to low</option>-->
         </select>
 
     </form>
 
     <ul class="products columns-3">
+
+        {% if all_products %}
         {% for item in all_products %}
-        <li class="ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
+
+        <li class="ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple" style="  box-shadow: 10px 10px 8px grey;">
             <div class="astra-shop-thumbnail-wrap"><a href="/product_detail/{{item.slug}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="300" height="300" src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="astra-shop-summary-wrap"> <span class="ast-woo-product-category">
             {{item.category.name}} </span>
-            <a href="product_detail/{{item.slug}}" class="ast-loop-product__link"><h2 class="woocommerce-loop-product__title">{{item.name}}</h2></a><div class="star-rating"><span style="width:0%">Rated <strong class="rating">0</strong> out of 5</span></div>
+            <a href="product_detail/{{item.slug}}" class="ast-loop-product__link"><h2 class="woocommerce-loop-product__title">{{item.name}}</h2></a>
             <span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
+            <div class="row"  style="padding: 20px;">
+                <div class="col-sm-7 col-md-7 col-lg-7" >
+                                <form>
+                                    <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
+                                      <input type="number" id="number" value="0" />
+                                    <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">+</div>
+                                </form>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <button class="btn btn-success">Add to cart</button>
+                </div>
+
+            </div>
+
             </div>
         </li>
 {% endfor %}
+{% endif %}
     </ul>
 
                 <div class="pagination">
@@ -91,6 +166,21 @@ Showing 1&ndash;9 of 12 results</p>
 </div>
     {% include 'base_templates/footer.html' %}
 </body>
+<script>
+    function increaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value++;
+  document.getElementById('number').value = value;
+}
 
+function decreaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value < 1 ? value = 1 : '';
+  value--;
+  document.getElementById('number').value = value;
+}
+</script>
 <!-- Mirrored from websitedemos.net/organic-shop-02/shop/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 03 May 2020 20:26:17 GMT -->
 </html>

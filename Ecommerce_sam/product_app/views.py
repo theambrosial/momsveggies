@@ -13,24 +13,24 @@ def all_products(request):
     page = request.GET.get('page')
     products_list = paginator.get_page(page)
     context={}
-    if request.method == 'GET' and 'orderby' in request.GET:
-        orderby = request.GET.get('orderby')
-        if orderby == 'price':
-            products_list = Product_model.objects.all().order_by('selling_cost')
-        elif orderby == 'rating':
-            products_list = Product_model.objects.all().order_by('ratings')
-        elif orderby == 'date':
-            products_list = Product_model.objects.all().order_by('entry_timedate')
-        elif orderby == 'price-desc':
-            products_list = Product_model.objects.all().order_by('-selling_cost')
-        elif orderby == 'popularity':
-            products_list = Product_model.objects.all().order_by('popularity')
-        paginator = Paginator(products_list, 9)
-        page = request.GET.get('page')
-        products_list = paginator.get_page(page)
-        context22 = {'all_products': products_list, }
-        context.update(context22)
-        # return redirect('/')
+    # if request.method == 'GET' and 'orderby' in request.GET:
+    #     orderby = request.GET.get('orderby')
+    #     if orderby == 'price':
+    #         products_list = Product_model.objects.all().order_by('selling_cost')
+    #     elif orderby == 'rating':
+    #         products_list = Product_model.objects.all().order_by('ratings')
+    #     elif orderby == 'date':
+    #         products_list = Product_model.objects.all().order_by('entry_timedate')
+    #     elif orderby == 'price-desc':
+    #         products_list = Product_model.objects.all().order_by('-selling_cost')
+    #     elif orderby == 'popularity':
+    #         products_list = Product_model.objects.all().order_by('popularity')
+    #     paginator = Paginator(products_list, 9)
+    #     page = request.GET.get('page')
+    #     products_list = paginator.get_page(page)
+    #     context22 = {'all_products': products_list, }
+    #     context.update(context22)
+    #     # return redirect('/')
 
 
 
