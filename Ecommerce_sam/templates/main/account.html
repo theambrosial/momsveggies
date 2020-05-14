@@ -622,7 +622,8 @@ a {
 <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
  {% include 'base_templates/navbar.html' %}
 
-  <div class="container">
+    {% if user.is_authenticated %}
+     <div class="container">
       <div class="page-header">
          <ul class="nav">
             <li class="settings-title">
@@ -731,16 +732,97 @@ a {
          </div>
       </div>
    </div>
+    {% else %}
+    	<div id="content" class="site-content">
+
+		<div class="ast-container">
+
+
+
+	<div id="primary" class="content-area primary">
+
+
+					<main id="main" class="site-main">
+
+
+
+
+
+<article
+	class="post-99 page type-page status-publish ast-article-single" id="post-99" itemtype="https://schema.org/CreativeWork" itemscope="itemscope">
+
+
+	<header class="entry-header ast-no-thumbnail ast-no-meta">
+
+
+		<h1 class="entry-title" itemprop="headline">My account</h1>	</header><!-- .entry-header -->
+
+	<div class="entry-content clear"
+		itemprop="text"	>
+
+
+		<div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
+
+		<h2>Login</h2>
+
+		<form class="woocommerce-form woocommerce-form-login login" method="post">{% csrf_token %}
+
+
+			<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+				<label for="username">Mobile Number&nbsp;<span class="required">*</span></label>
+				<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="" />			</p>
+			<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+				<label for="password">Password&nbsp;<span class="required">*</span></label>
+				<input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="password" autocomplete="current-password" />
+			</p>
+
+
+			<p class="form-row">
+				<label class="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
+					<input class="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span>Remember me</span>
+				</label>
+				<input type="hidden" id="woocommerce-login-nonce" name="woocommerce-login-nonce" value="2b20433319" /><input type="hidden" name="_wp_http_referer" value="/organic-shop-02/my-account/" />				<button type="submit" class="woocommerce-button button woocommerce-form-login__submit" name="login" value="Log in">Log in</button>
+			</p>
+			<p class="woocommerce-LostPassword lost_password">
+				<a href="/lost_password/">Lost your password?</a>
+			</p>
+
+
+		</form>
+
+
+</div>
+
+
+
+	</div><!-- .entry-content .clear -->
+
+
+
+</article><!-- #post-## -->
+
+
+
+
+
+			</main><!-- #main -->
+
+
+	</div><!-- #primary -->
+
+
+
+			</div> <!-- ast-container -->
+
+		</div><!-- #content -->
+    {% endif %}
+
+
 <!-- modal -->
 
 
 </div>
-</main>
-</div>
-</div>
-</div>
 
-</div>
     {% include 'base_templates/footer.html' %}
 </body>
 
