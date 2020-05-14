@@ -200,18 +200,34 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 
-<div id="rec_data">
+<div id="rec_data ">
 
+<style>
+    .addTocart {
 
-    <ul class="products columns-3">
+    background-color: #8bc34a;
+     font-family: Work Sans;
+     border-radius: 60px;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+       font-weight: 500;
+        font-size: 15px;
+         border: none;
+
+    }
+</style>
+
+    <ul class="products columns-3 row">
 
         {% for item in all_products %}
-        <li class="ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple" style=" box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
+        <li class=" ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple" style=" box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);height: 460px; width: 370px;">
             <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
 
             <div class="astra-shop-thumbnail-wrap">
                 <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                    <img width="150" height="150" src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""  style="height: 370px; width: 370px;"/>
+                    <img src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""  style="height: 300px; width: 100%;"/>
                 </a>
             </div>
             <div class="astra-shop-summary-wrap" style="padding: 20px;">
@@ -232,8 +248,9 @@ input[type=number]::-webkit-outer-spin-button {
 
                 </div>
                 <input type="hidden" name="product_id" value="{{item.id}}">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                    <button type="submit" name="add_to_cart" class="btn btn-success">Add to cart</button>
+                <div class="col-sm-4 col-md-5 col-lg-4">
+
+                    <button type="submit" name="add_to_cart" class="addTocart btn btn-success" style="">Add to cart</button>
                 </div>
 
             </div>
