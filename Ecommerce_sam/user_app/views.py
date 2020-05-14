@@ -8,6 +8,10 @@ def home(request):
 def product_detail(request):
     return render(request,'main/product_detail.html')
 
+
+def about_us(request):
+    return render(request,'main/about.html')
+
 def account(request):
     cart_objs = Cart_products.objects.filter(cart_id__user_id=request.user,cart_id__is_payment_done=True)
     context={

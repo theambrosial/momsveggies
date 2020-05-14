@@ -11,9 +11,35 @@
 <title>Shop - Organic Store</title>
 
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
 <link rel='dns-prefetch' href='http://s.w.org/' />
+
+<style>
+ .content-desktop {display: block;}
+    .content-mobile {display: none;}
+
+
+
+    @media screen and (max-width: 768px) {
+
+    .content-desktop {display: none;}
+    .content-mobile {display: block;}
+
+
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+   .content-desktop {display: none;}
+    .content-mobile {display: block;}
+}
+</style>
+
 <style>
 
 .value-button {
@@ -62,16 +88,22 @@ form #input-wrap {
   border-bottom: 1px solid #ddd;
   margin: 0px;
   width: 40px;
-  height: 36.5px;
+  height: 20px;
+}
+
+input[type=number] {
+padding: 1px;
 }
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+
 }
 </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel=“stylesheet” href=“https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto.min.css”></i>
 
 </head>
 <body class="archive post-type-archive post-type-archive-product wp-custom-logo theme-astra woocommerce woocommerce-page woocommerce-no-js ehf-footer ehf-template-astra ehf-stylesheet-astra ast-desktop ast-separate-container ast-two-container ast-no-sidebar astra-2.4.3 ast-header-custom-item-outside columns-3 tablet-columns-3 mobile-columns-1 ast-woo-shop-archive ast-woocommerce-cart-menu ast-replace-site-logo-transparent ast-inherit-site-logo-transparent elementor-default elementor-kit-3049 astra-addon-2.4.1">
@@ -180,15 +212,14 @@ input[type=number]::-webkit-outer-spin-button {
 
     <h1 id="allproducts" class="elementor-heading-title elementor-size-default">All Products</h1>
     </center>
- <br>
+
     <br>
-<div class="woocommerce-notices-wrapper"></div>
-    <div class="woocommerce-ordering" >
-        <select name="orderby_cat" onchange="choice5(this)" class="orderby" aria-label="Shop order">
-            <option value="0" selected='selected'>Select Category</option>
+    <br>
+            <select name="orderby_cat" onchange="choice5(this)" class="orderby form-control" aria-label="Shop order" style="padding:0px; width: 300px; font-size: 15px;">
+            <option value="0" selected='selected' style="font-size: 15px;">Select Category</option>
 
             {% for item in allcategories %}
-        <option value="{{item.id}}">{{item.name}}</option>
+        <option value="{{item.id}}" style="font-size: 15px;">{{item.name}}</option>
             {% endfor %}
 <!--        <option value="popularity">Sort by popularity</option>-->
 <!--        <option value="rating">Sort by average rating</option>-->
@@ -196,6 +227,11 @@ input[type=number]::-webkit-outer-spin-button {
 <!--        <option value="price">Sort by price: low to high</option>-->
 <!--        <option value="price-desc">Sort by price: high to low</option>-->
         </select>
+ <br>
+    <br>
+<div class="woocommerce-notices-wrapper"></div>
+    <div class="woocommerce-ordering" >
+
 </div>
 
 
@@ -215,22 +251,31 @@ input[type=number]::-webkit-outer-spin-button {
        font-weight: 500;
         font-size: 15px;
          border: none;
+         width: 150px;
 
     }
+
+
 </style>
 
-    <ul class="products columns-3 row">
 
-        {% for item in all_products %}
-        <li class=" ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple" style=" box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);height: 460px; width: 370px;">
-            <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
 
-            <div class="astra-shop-thumbnail-wrap">
+<div class="row ">
+            {% for item in all_products %}
+
+    <div class="col-sm-2 col-md-4 col-lg-4 content-desktop" style="padding:10px;">
+
+        <div class="shadow">
+
+
+
+
+                   <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
+
                 <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                     <img src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""  style="height: 300px; width: 100%;"/>
                 </a>
-            </div>
-            <div class="astra-shop-summary-wrap" style="padding: 20px;">
+                                  <div class="astra-shop-summary-wrap" style="padding: 20px;">
                 <span class="ast-woo-product-category">
             {{item.category.name}} </span>
             <!--<a href="product_detail/{{item.slug}}" class="ast-loop-product__link">-->
@@ -240,28 +285,105 @@ input[type=number]::-webkit-outer-spin-button {
                 <span class="woocommerce-Price-amount amount">
                     <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
             <div class="row"  style="padding: 10px;">
-                <div class="col-sm-7 col-md-7 col-lg-7" >
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <center>
 
-                                    <div class="value-button" id="decrease" onclick="decreaseValue({{forloop.counter}})" >-</div>
-                                      <input type="number" class="num-button" id="number{{forloop.counter}}" name="quantity" value="1" />
-                                    <div class="value-button" id="increase" onclick="increaseValue({{forloop.counter}})" >+</div>
+<div style="margin-top: 20px;">
+
+                    <div class="value-button" id="decrease" onclick="decreaseValue({{forloop.counter}})" >-</div>
+                    <input type="number" class="num-button" id="number{{forloop.counter}}" name="quantity" value="1"  style="padding: 0.30em;"/>
+                    <div class="value-button" id="increase" onclick="increaseValue({{forloop.counter}})" >+</div>
+</div>
+
+                    </center>
 
                 </div>
                 <input type="hidden" name="product_id" value="{{item.id}}">
-                <div class="col-sm-4 col-md-5 col-lg-4">
-
-                    <button type="submit" name="add_to_cart" class="addTocart btn btn-success" style="">Add to cart</button>
+                <div class="col-sm-12 col-md-6 col-lg-6">
+<center>
+                    <button type="submit" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
+</center>
                 </div>
 
             </div>
 
             </div>
-                </form>
-        </li>
+
+           </form>
+        </div>
+
+    </div>
 
 {% endfor %}
-    </ul>
+
 </div>
+
+    <div class="row ">
+            {% for item in all_products %}
+
+    <div class="col-sm-2 col-md-4 col-lg-4 content-mobile" style="padding:10px; width: 50%;">
+
+        <div class="shadow">
+
+
+
+
+                   <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
+
+                <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                    <img src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""  style="height: 150px; width: 100%;"/>
+                </a>
+                                  <div class="astra-shop-summary-wrap" style="padding: 10px;">
+                <span class="ast-woo-product-category" style="color: gray;">
+            {{item.category.name}} </span>
+            <!--<a href="product_detail/{{item.slug}}" class="ast-loop-product__link">-->
+
+
+                <h2 class="woocommerce-loop-product__title" style="font-size: 18px;">{{item.name}}</h2>
+
+
+            <!--</a>-->
+            <span class="price">
+                <span class="woocommerce-Price-amount amount">
+                    <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
+            <div class="row"  style="padding: 5px;">
+                <div class="col-sm-6 col-md-6 col-lg-6">
+                    <center>
+
+<div style="margin-top: 20px;">
+
+                    <div class="value-button" id="decrease" onclick="decreaseValue({{forloop.counter}})" >-</div>
+                    <input type="number" class="num-button" id="number{{forloop.counter}}" name="quantity" value="1"  style="padding: 0.30em;"/>
+                    <div class="value-button" id="increase" onclick="increaseValue({{forloop.counter}})" >+</div>
+</div>
+
+                    </center>
+
+                </div>
+                <input type="hidden" name="product_id" value="{{item.id}}">
+                <div class="col-sm-4 col-md-4 col-lg-4">
+<center>
+                    <button type="submit" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
+</center>
+                </div>
+
+            </div>
+
+            </div>
+
+           </form>
+        </div>
+
+    </div>
+
+{% endfor %}
+
+</div>
+
+
+
+</div>
+
                 <div class="pagination">
     <span class="step-links">
         {% if lead_list.has_previous %}
