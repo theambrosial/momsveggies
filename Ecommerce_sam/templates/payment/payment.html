@@ -135,7 +135,7 @@
 			<center>
 
 
-                    <form action="/payment-confirmation" method="POST">{% csrf_token %}
+                    <form action="/payment-confirmation/{{orders_rzp.id}}/{{orders.id}}" method="POST">{% csrf_token %}
 
 <script
     src="https://checkout.razorpay.com/v1/checkout.js"

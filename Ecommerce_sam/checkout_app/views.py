@@ -7,7 +7,7 @@ from django.db.models import Sum
 from cart_app.models import Cart_products, Cart_model
 import razorpay
 from Ecommerce_sam import settings
-from .models import Orders_rzp
+from .models import Orders_rzp, Order_placed, payment_rzp
 
 
 def checkout(request):
@@ -63,8 +63,36 @@ def payment(request):
         order_id_razorpay=client.order.create(data=DATA)
 
         orders_rzp = Orders_rzp()
+        orders_rzp.user_id = user
         orders_rzp.amount = order_id_razorpay['amount']
         orders_rzp.razorpay_order_id = order_id_razorpay['id']
+        orders_rzp.razorpay_order_id = ''
+        orders_rzp.razorpay_payment_id = ''
+        orders_rzp.razorpay_signature = ''
+        orders_rzp.generated_signature = ''
+        orders_rzp.signature_matching_status = False
+        orders_rzp.is_payment_successful = False
+        orders_rzp.save()
+
+        orders = Order_placed()
+        orders.user_id = user
+        orders.fname = request.POST.get('billing_first_name')
+        orders.lname = request.POST.get('billing_last_name')
+        orders.phone = request.POST.get('billing_phone')
+        orders.email = request.POST.get('billing_email')
+        orders.city = request.POST.get('billing_city')
+        orders.state = request.POST.get('billing_state')
+        orders.zip_code = request.POST.get('billing_postcode')
+        orders.address1 = request.POST.get('billing_address_1')
+        orders.address2 = request.POST.get('billing_address_2')
+        orders.country = request.POST.get('billing_country')
+        orders.order_rzp_id = orders_rzp
+        orders.delivery_status = 'Preparing Order'
+        orders.delivery_done = False
+        orders.save()
+
+
+
 
         if 'available_cart_pk' in request.session:
             cart_objs = Cart_model.objects.filter(id=request.session['available_cart_pk'], is_payment_done=False)
@@ -78,6 +106,8 @@ def payment(request):
             cart_item_exist = True if cart_objs.count() > 0 else False
             total_product_cost=cart_objs.aggregate(Sum('product_cost'))
 
+        # cart_model_obj = Cart_model.objects.get(user_id=request.user.id,is_payment_done=False)
+
         context={
             'name':str(request.POST.get('billing_first_name'))+str(request.POST.get('billing_last_name')),
             'email': request.POST.get('billing_email'),
@@ -86,12 +116,14 @@ def payment(request):
             'cart_objs': cart_objs,
             'cart_item_exist': cart_item_exist,
             'order_id_razorpay': order_id_razorpay['id'],
+            'orders_rzp': orders_rzp,
+            'orders': orders,
         }
         return render(request,'payment/payment.html',context)
     else:
         return HttpResponse("Something Went Wrong, Try Again!!!")
 
-def payment_confirmation(request):
+def payment_confirmation(request,orders_rzp, orders):
     if request.method == 'POST' and 'razorpay_order_id' in request.POST:
         razorpay_payment_id = request.POST.get('razorpay_payment_id')
         razorpay_order_id = request.POST.get('razorpay_order_id')
@@ -107,18 +139,51 @@ def payment_confirmation(request):
         if (generated_signature == razorpay_signature):
             print("payment is Successful")
             payment = True
+            Orders_rzp.objects.filter(id = int(orders_rzp)).update(razorpay_order_id=razorpay_order_id,razorpay_payment_id=razorpay_payment_id,razorpay_signature=razorpay_signature,generated_signature=generated_signature,signature_matching_status=True,is_payment_successful=True)
+            Order_placed.objects.filter(id = int(orders)).update(payment_status=True,order_rzp_id=Orders_rzp.objects.get(id = int(orders_rzp)))
         else:
             print("payment is Unsuccessful")
             payment = False
+            Orders_rzp.objects.filter(id = int(orders_rzp)).update(razorpay_order_id=razorpay_order_id,razorpay_payment_id=razorpay_payment_id,razorpay_signature=razorpay_signature,generated_signature=generated_signature,signature_matching_status=False,is_payment_successful=False)
+            Order_placed.objects.filter(id = int(orders)).update(payment_status=False,order_rzp_id=Orders_rzp.objects.get(id = int(orders_rzp)))
+
 
         client = razorpay.Client(auth=(settings.KEY_ID_RAZORPAY, settings.KEY_SECRET_RAZORPAY))
         data=client.payment.fetch(razorpay_payment_id)
         if payment and data['order_id']==razorpay_order_id and data['id']==razorpay_payment_id and data['status']== 'captured' and data['error_code'] == None:
             final_payment_status = True
-            Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False).update(is_payment_done=True)
+            cart_model_obj = Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False)
+            cart_model_obj.update(is_payment_done=True)
+            for item in cart_model_obj:
+                cart_model_id = item.id
+            rzp_payment = payment_rzp()
+            rzp_payment.razorpay_payment_id = razorpay_payment_id
+            rzp_payment.final_payment_confirmation = True
+            rzp_payment.user_id = request.user
+            rzp_payment.razorpay_status = data['status']
+            rzp_payment.order_rzp_id = Orders_rzp.objects.get(id = int(orders_rzp))
+            rzp_payment.order_placed_id = Order_placed.objects.get(id = int(orders))
+            rzp_payment.cart_model_id = Cart_model.objects.get(id=cart_model_id)
+            rzp_payment.save()
+
+
+
             # To-do
         else:
             final_payment_status = False
+            cart_model_obj = Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False)
+            for item in cart_model_obj:
+                cart_model_id = item.id
+            rzp_payment = payment_rzp()
+            rzp_payment.razorpay_payment_id = 'Failure' if razorpay_payment_id == None or razorpay_payment_id == '' else razorpay_payment_id
+            rzp_payment.final_payment_confirmation = False
+            rzp_payment.user_id = request.user
+            rzp_payment.razorpay_status = data['status']
+            rzp_payment.order_rzp_id = Orders_rzp.objects.get(id=int(orders_rzp))
+            rzp_payment.order_placed_id = Order_placed.objects.get(id=int(orders))
+            rzp_payment.cart_model_id = Cart_model.objects.get(id=cart_model_id)
+            rzp_payment.save()
+
 
         context = {
             'final_payment_status':final_payment_status,
