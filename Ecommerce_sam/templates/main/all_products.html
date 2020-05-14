@@ -55,7 +55,7 @@ form #input-wrap {
   padding: 0px;
 }
 
-input#number {
+.num-button {
   text-align: center;
   border: none;
   border-top: 1px solid #ddd;
@@ -226,9 +226,9 @@ input[type=number]::-webkit-outer-spin-button {
             <div class="row"  style="padding: 10px;">
                 <div class="col-sm-7 col-md-7 col-lg-7" >
 
-                                    <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
-                                      <input type="number" id="number" name="quantity" value="1" />
-                                    <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">+</div>
+                                    <div class="value-button" id="decrease" onclick="decreaseValue({{forloop.counter}})" >-</div>
+                                      <input type="number" class="num-button" id="number{{forloop.counter}}" name="quantity" value="1" />
+                                    <div class="value-button" id="increase" onclick="increaseValue({{forloop.counter}})" >+</div>
 
                 </div>
                 <input type="hidden" name="product_id" value="{{item.id}}">
@@ -251,7 +251,6 @@ input[type=number]::-webkit-outer-spin-button {
             <a class="btn btn-primary" href="?page=1">&laquo; first</a>
             <a class="btn btn-primary" href="?page={{ all_products.previous_page_number }}">previous</a>
         {% endif %}
-
 
     </span>
             </div>
@@ -303,19 +302,20 @@ input[type=number]::-webkit-outer-spin-button {
 
   </script>
 <script>
-    function increaseValue() {
-  var value = parseInt(document.getElementById('number').value, 10);
+    function increaseValue(idd) {
+  var value = parseInt(document.getElementById('number'+idd).value, 10);
   value = isNaN(value) ? 0 : value;
   value++;
-  document.getElementById('number').value = value;
+  document.getElementById('number'+idd).value = value;
 }
 
-function decreaseValue() {
-  var value = parseInt(document.getElementById('number').value, 10);
+function decreaseValue(idd) {
+
+  var value = parseInt(document.getElementById('number'+idd).value, 10);
   value = isNaN(value) ? 0 : value;
   value < 1 ? value = 1 : '';
   value--;
-  document.getElementById('number').value = value;
+  document.getElementById('number'+idd).value = value;
 }
 </script>
 </body>
