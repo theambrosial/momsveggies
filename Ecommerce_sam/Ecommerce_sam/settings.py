@@ -141,6 +141,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn", "static_root")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'harshkumarpathak01@gmail.com'
+# EMAIL_HOST_PASSWORD = 'ipv6netuser'
+
+EMAIL_HOST_USER = 'vikas.pandey9323@gmail.com'
+EMAIL_HOST_PASSWORD = '#Vikas@@7786'
 
 KEY_ID_RAZORPAY="rzp_test_Pma8Ps4jKf2lyp"
 KEY_SECRET_RAZORPAY="dpBuImsWN9tJPlddRzR5Grno"

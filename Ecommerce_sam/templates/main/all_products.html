@@ -181,9 +181,13 @@ input[type=number]::-webkit-outer-spin-button {
  <br>
     <br>
 <div class="woocommerce-notices-wrapper"></div>
-    <form class="woocommerce-ordering" method="get">
-        <select name="orderby" class="orderby" aria-label="Shop order">
-        <option value="menu_order" selected='selected'>Categories</option>
+    <form class="woocommerce-ordering" method="post">{% csrf_token %}
+        <select name="orderby_cat" class="orderby" aria-label="Shop order">
+            <option value="0" selected='selected'>Select Category</option>
+
+            {% for item in allcategories %}
+        <option value="{{item.id}}">{{item.name}}</option>
+            {% endfor %}
 <!--        <option value="popularity">Sort by popularity</option>-->
 <!--        <option value="rating">Sort by average rating</option>-->
 <!--        <option value="date">Sort by latest</option>-->
@@ -197,32 +201,44 @@ input[type=number]::-webkit-outer-spin-button {
 
     <ul class="products columns-3">
 
-        {% if all_products %}
         {% for item in all_products %}
-
         <li class="ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple" style="  box-shadow: 10px 10px 8px grey;">
-            <div class="astra-shop-thumbnail-wrap"><a href="/product_detail/{{item.slug}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="300" height="300" src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" sizes="(max-width: 300px) 100vw, 300px" /></a></div><div class="astra-shop-summary-wrap"> <span class="ast-woo-product-category">
+            <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
+
+            <div class="astra-shop-thumbnail-wrap">
+                <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                    <img width="300" height="300" src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" sizes="(max-width: 300px) 100vw, 300px" />
+                </a>
+            </div>
+            <div class="astra-shop-summary-wrap">
+                <span class="ast-woo-product-category">
             {{item.category.name}} </span>
-            <a href="product_detail/{{item.slug}}" class="ast-loop-product__link"><h2 class="woocommerce-loop-product__title">{{item.name}}</h2></a>
-            <span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
+            <!--<a href="product_detail/{{item.slug}}" class="ast-loop-product__link">-->
+                <h2 class="woocommerce-loop-product__title">{{item.name}}</h2>
+            <!--</a>-->
+            <span class="price">
+                <span class="woocommerce-Price-amount amount">
+                    <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
             <div class="row"  style="padding: 20px;">
                 <div class="col-sm-7 col-md-7 col-lg-7" >
-                                <form>
+
                                     <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
-                                      <input type="number" id="number" value="0" />
+                                      <input type="number" id="number" name="quantity" value="1" />
                                     <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">+</div>
-                                </form>
+
                 </div>
+                <input type="hidden" name="product_id" value="{{item.id}}">
                 <div class="col-sm-4 col-md-4 col-lg-4">
-                    <button class="btn btn-success">Add to cart</button>
+                    <button type="submit" name="add_to_cart" class="btn btn-success">Add to cart</button>
                 </div>
 
             </div>
 
             </div>
+                </form>
         </li>
+
 {% endfor %}
-{% endif %}
     </ul>
 
                 <div class="pagination">

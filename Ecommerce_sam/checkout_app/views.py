@@ -7,6 +7,8 @@ from django.db.models import Sum
 from cart_app.models import Cart_products, Cart_model
 import razorpay
 from Ecommerce_sam import settings
+from .models import Orders_rzp
+
 
 def checkout(request):
     if 'available_cart_pk' in request.session:
@@ -50,7 +52,7 @@ def payment(request):
         <p>Password : '''+generated_password+'''</p>
         <p> Thank You</p>
         '''
-        send_html_mail('Account Created - Moms Veggies',html_content)
+        send_html_mail('Account Created - Moms Veggies',html_content,settings.EMAIL_HOST_USER,[request.POST.get('billing_email'),])
         #Creating RayzorPay Order
         client = razorpay.Client(auth=(settings.KEY_ID_RAZORPAY, settings.KEY_SECRET_RAZORPAY))
         client.set_app_details({"title": "Moms_Veggies", "version": "0.1"})
@@ -60,9 +62,15 @@ def payment(request):
                 "payment_capture": "1",}
         order_id_razorpay=client.order.create(data=DATA)
 
+        orders_rzp = Orders_rzp()
+        orders_rzp.amount = order_id_razorpay['amount']
+        orders_rzp.razorpay_order_id = order_id_razorpay['id']
+
         if 'available_cart_pk' in request.session:
-            cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(id=request.session['available_cart_pk'],is_payment_done=False).id)
-            cart_objs.update(user_id = request.user.id)
+            cart_objs = Cart_model.objects.filter(id=request.session['available_cart_pk'], is_payment_done=False)
+            cart_objs.update(user_id=request.user.id)
+            cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(user_id=request.user.id,is_payment_done=False).id)
+
             cart_item_exist = True if cart_objs.count()>0 else False
             total_product_cost = cart_objs.aggregate(Sum('product_cost'))
         elif request.user.is_authenticated :
@@ -107,6 +115,8 @@ def payment_confirmation(request):
         data=client.payment.fetch(razorpay_payment_id)
         if payment and data['order_id']==razorpay_order_id and data['id']==razorpay_payment_id and data['status']== 'captured' and data['error_code'] == None:
             final_payment_status = True
+            Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False).update(is_payment_done=True)
+            # To-do
         else:
             final_payment_status = False
 

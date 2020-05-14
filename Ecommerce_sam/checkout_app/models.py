@@ -3,7 +3,7 @@ from django.utils import timezone
 from cart_app.models import Cart_model
 
 
-class orders_rzp(models.Model):
+class Orders_rzp(models.Model):
     receipt = models.CharField(max_length=20)
     amount = models.CharField(max_length=20)
     razorpay_order_id = models.CharField(max_length=50)
@@ -26,7 +26,7 @@ class Order_placed(models.Model):
     address2 = models.CharField(max_length=90)
     country = models.CharField(max_length=20)
     payment_status = models.BooleanField(default=False)
-    order_rzp_id = models.ForeignKey(orders_rzp, on_delete=models.DO_NOTHING)
+    order_rzp_id = models.ForeignKey(Orders_rzp, on_delete=models.DO_NOTHING)
     delivery_status = models.CharField(max_length=20,choices=(
         ('Preparing Order','Preparing Order'),
         ('Packing','Packing'),
@@ -38,7 +38,7 @@ class Order_placed(models.Model):
 
 class payment_rzp(models.Model):
     amount = models.CharField(max_length=30)
-    order_rzp_id = models.ForeignKey(orders_rzp, on_delete=models.DO_NOTHING)
+    order_rzp_id = models.ForeignKey(Orders_rzp, on_delete=models.DO_NOTHING)
     order_placed_id = models.ForeignKey(Order_placed, on_delete=models.DO_NOTHING)
     cart_model_id = models.ForeignKey(Cart_model, on_delete=models.DO_NOTHING)
     razorpay_payment_id = models.CharField(max_length=50)

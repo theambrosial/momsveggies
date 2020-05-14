@@ -99,10 +99,13 @@ html{font-size:100%;}a,.page-title{color:#8bc34a;}a:hover,a:focus{color:#8bc34a;
 <li id="menu-item-406" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-406"><a title="" href="/">Home</a></li>
 <!--<li id="menu-item-344" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-344"><a title="						" href="../about/index.html">About</a></li>-->
 <!--<li id="menu-item-337" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-337"><a title="						" href="../contact/index.html">Contact</a></li>-->
-<li id="menu-item-470" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-470"><a title="						" href="#">Account</a><button class="ast-menu-toggle" aria-expanded="false"><span class="screen-reader-text">Menu Toggle</span></button>
+<li id="menu-item-470" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-470">
+	<a title="						" href="#">Account</a><button class="ast-menu-toggle" aria-expanded="false"><span class="screen-reader-text">Menu Toggle</span></button>
 <ul class="sub-menu">
-	<li id="menu-item-472" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-99 current_page_item menu-item-472"><a title="						" href="index.html" aria-current="page">My account</a></li>
-	<li id="menu-item-471" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-471"><a title="" href="/cart">Cart</a></li>
+	<li id="menu-item-472" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-99 current_page_item menu-item-472">
+		<a title="						" href="/account" aria-current="page">My account</a></li>
+	<li id="menu-item-471" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-471">
+		<a title="" href="/cart">Cart</a></li>
 </ul>
 </li>
 </ul></div></nav></div></div>			<div class="ast-masthead-custom-menu-items woocommerce-custom-menu-item">
@@ -126,18 +129,19 @@ html{font-size:100%;}a,.page-title{color:#8bc34a;}a:hover,a:focus{color:#8bc34a;
 		{% if is_cart_items_notif %}
         {% for item in cart_items_notif %}
         <li class="woocommerce-mini-cart-item mini_cart_item">
-            <a href="https://websitedemos.net/organic-shop-02/cart/?remove_item=006f52e9102a8d3be2fe5614f42ba989&amp;_wpnonce=9fb8802166" class="remove remove_from_cart_button" aria-label="Remove this item" data-product_id="168" data-cart_item_key="006f52e9102a8d3be2fe5614f42ba989" data-product_sku="">×</a>
-            <a href="/product_detail/{{item.product.slug}}">
-            <img width="300" height="300" src="{{item.product.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" sizes="(max-width: 300px) 100vw, 300px">Assorted Coffee</a>
+
+            <a href="/delete_item?q={{item.cart_id.id}}&id={{item.id}}" class="remove remove_from_cart_button" aria-label="Remove this item" data-product_id="168" data-cart_item_key="006f52e9102a8d3be2fe5614f42ba989" data-product_sku="">×</a>
+            <a href="#">
+            <img width="300" height="300" src="{{item.product.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" sizes="(max-width: 300px) 100vw, 300px">{{item.product.name}}</a>
             <span class="quantity">{{item.product_quantity}} × <span class="woocommerce-Price-amount amount">
-            <span class="woocommerce-Price-currencySymbol">Rs.</span>{{item.product_cost}}</span></span>
+            <span class="woocommerce-Price-currencySymbol">Rs.</span>{{item.product.selling_cost}}</span></span>
         </li>
         {% endfor %}
 		{% endif %}
 	</ul>
 
 	<p class="woocommerce-mini-cart__total total">
-		<strong>Subtotal:</strong> <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>70.00</span>	</p>
+		<strong>Subtotal:</strong> <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rs</span>{{total_product_cost}}</span>	</p>
 
 
 	<p class="woocommerce-mini-cart__buttons buttons">

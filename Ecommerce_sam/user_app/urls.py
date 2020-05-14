@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, product_detail, account
+from .views import home, product_detail, account, delete_cart_item, delete_item
 
 urlpatterns = [
     path('home/',home ,name='home'),
@@ -9,4 +9,6 @@ urlpatterns = [
     # path('cart/', contact, name='contact'),
     path('product_detail/', product_detail, name='product_detail'),
     path('account/', account, name='account'),
+    path('delete_cart_item/', delete_cart_item, name='delete_cart_item'),
+    path('delete_item/', delete_item, name='delete_item'),
 ]
