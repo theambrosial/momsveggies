@@ -9,7 +9,11 @@ def product_detail(request):
     return render(request,'main/product_detail.html')
 
 def account(request):
-    return render(request,'main/account.html')
+    cart_objs = Cart_products.objects.filter(cart_id__user_id=request.user,cart_id__is_payment_done=True)
+    context={
+        'cart_objs':cart_objs,
+    }
+    return render(request,'main/account.html',context)
 
 def delete_cart_item(request):
     if request.method == 'GET' and 'id' in request.GET and request.GET.get("q")!= None:

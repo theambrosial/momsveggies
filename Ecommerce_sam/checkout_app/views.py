@@ -31,28 +31,31 @@ def payment(request):
     if request.method == 'POST' and 'csrfmiddlewaretoken' in request.POST and 'total_product_cost' in request.POST:
         # Creating User In The Database
         from user_app.models import SiteUser
-        generated_password = str(request.POST.get('billing_first_name'))[:3]+str(request.POST.get('billing_phone'))[5:]
-        user = SiteUser()
-        user.email = request.POST.get('billing_email')
-        user.set_password(generated_password)
-        user.mobile = request.POST.get('billing_phone')
-        user.first_name = request.POST.get('billing_first_name')
-        user.last_name = request.POST.get('billing_last_name')
-        user.password_text = generated_password
-        user.save()
-        # Logging User In System
-        user = authenticate(request, mobile=request.POST.get('billing_phone'), password=generated_password)
-        if user is not None:
-            login(request, user)
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            generated_password = str(request.POST.get('billing_first_name'))[:3]+str(request.POST.get('billing_phone'))[5:]
+            user = SiteUser()
+            user.email = request.POST.get('billing_email')
+            user.set_password(generated_password)
+            user.mobile = request.POST.get('billing_phone')
+            user.first_name = request.POST.get('billing_first_name')
+            user.last_name = request.POST.get('billing_last_name')
+            user.password_text = generated_password
+            user.save()
+            # Logging User In System
+            user = authenticate(request, mobile=request.POST.get('billing_phone'), password=generated_password)
+            if user is not None:
+                login(request, user)
 
-        # Emailing Credentials To The User
-        from common_utilities.email_utility import send_html_mail
-        html_content='''
-        <p>UserName : '''+request.POST.get('billing_phone')+'''</p>
-        <p>Password : '''+generated_password+'''</p>
-        <p> Thank You</p>
-        '''
-        send_html_mail('Account Created - Moms Veggies',html_content,settings.EMAIL_HOST_USER,[request.POST.get('billing_email'),])
+            # Emailing Credentials To The User
+            from common_utilities.email_utility import send_html_mail
+            html_content='''
+            <p>UserName : '''+request.POST.get('billing_phone')+'''</p>
+            <p>Password : '''+generated_password+'''</p>
+            <p> Thank You</p>
+            '''
+            send_html_mail('Account Created - Moms Veggies',html_content,settings.EMAIL_HOST_USER,[request.POST.get('billing_email'),])
         #Creating RayzorPay Order
         client = razorpay.Client(auth=(settings.KEY_ID_RAZORPAY, settings.KEY_SECRET_RAZORPAY))
         client.set_app_details({"title": "Moms_Veggies", "version": "0.1"})
@@ -153,9 +156,12 @@ def payment_confirmation(request,orders_rzp, orders):
         if payment and data['order_id']==razorpay_order_id and data['id']==razorpay_payment_id and data['status']== 'captured' and data['error_code'] == None:
             final_payment_status = True
             cart_model_obj = Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False)
-            cart_model_obj.update(is_payment_done=True)
             for item in cart_model_obj:
                 cart_model_id = item.id
+            cart_objs_c = Cart_products.objects.filter(cart_id=cart_model_id).aggregate(Sum('product_cost'))
+            cart_objs_q = Cart_products.objects.filter(cart_id=cart_model_id).aggregate(Sum('product_quantity'))
+            cart_model_obj.update(is_payment_done=True,total_cost=cart_objs_c['product_cost__sum'],total_quantity=cart_objs_q['product_quantity__sum'])
+
             rzp_payment = payment_rzp()
             rzp_payment.razorpay_payment_id = razorpay_payment_id
             rzp_payment.final_payment_confirmation = True
@@ -165,6 +171,8 @@ def payment_confirmation(request,orders_rzp, orders):
             rzp_payment.order_placed_id = Order_placed.objects.get(id = int(orders))
             rzp_payment.cart_model_id = Cart_model.objects.get(id=cart_model_id)
             rzp_payment.save()
+
+
 
 
 

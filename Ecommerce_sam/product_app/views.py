@@ -40,13 +40,13 @@ def all_products(request):
                         item.product = req_product_obj
                         item.product_quantity = quantity
                         item.cart_id = Cart_model.objects.get(id=main_c_pk)
-                        item.product_cost = req_product_obj.selling_cost * quantity
+                        item.product_cost = req_product_obj.selling_cost * float(quantity)
                         item.save()
                 else:
                     main_cart = Cart_model()
                     main_cart.total_cost = 0.0
                     main_cart.total_quantity = 0.0
-                    main_cart.user_id = request.user.pk
+                    main_cart.user_id = request.user
                     main_cart.save()
                     req_product_obj = Product_model.objects.get(id=product_id)
 
@@ -54,7 +54,7 @@ def all_products(request):
                     item.product = req_product_obj
                     item.product_quantity = quantity
                     item.cart_id = Cart_model.objects.get(id=main_cart.pk)
-                    item.product_cost = req_product_obj.selling_cost * quantity
+                    item.product_cost = req_product_obj.selling_cost * float(quantity)
                     item.save()
 
             else:
@@ -74,10 +74,10 @@ def all_products(request):
                             cart_product_obj.update(product_cost=req_product_obj.selling_cost * F('product_quantity'))
                         else:
                             item = Cart_products()
-                            item.product = Product_model.objects.get(id=product_id)
+                            item.product = req_product_obj
                             item.product_quantity = quantity
                             item.cart_id = Cart_model.objects.get(id=request.session['available_cart_pk'])
-                            item.product_cost = Product_model.objects.get(id=product_id).selling_cost * float(quantity)
+                            item.product_cost = req_product_obj.selling_cost * float(quantity)
                             item.save()
 
                 elif 'available_cart_pk' not in request.session:
@@ -152,7 +152,7 @@ def product_detail(request,slug):
                 main_cart = Cart_model()
                 main_cart.total_cost = 0.0
                 main_cart.total_quantity = 0.0
-                main_cart.user_id = request.user.pk
+                main_cart.user_id = request.user
                 main_cart.save()
 
                 item = Cart_products()

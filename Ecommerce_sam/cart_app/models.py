@@ -9,7 +9,7 @@ class Cart_model(models.Model):
     total_cost = models.FloatField()
     total_quantity = models.BigIntegerField()
     user_id = models.ForeignKey(SiteUser,models.DO_NOTHING,null=True,blank=True)
-    session_id = models.CharField(max_length=90,unique=True)
+    session_id = models.CharField(max_length=90,unique=True,null=True,blank=True)
     is_payment_done = models.BooleanField(default=False)
     entry_timedate = models.DateTimeField(default=timezone.now,)
 

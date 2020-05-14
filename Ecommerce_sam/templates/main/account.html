@@ -656,26 +656,26 @@ a {
                      <div class="row">
                         <div class="col-sm-4">
                            <label>First Name</label>
-                           <input type="text" class="input-md form-control">
+                           <input type="text" class="input-md form-control" value="{{user.first_name}}">
                         </div>
                         <div class="col-sm-4">
                            <label>Last Name</label>
-                           <input type="text" class="input-md form-control">
+                           <input type="text" class="input-md form-control" value="{{user.last_name}}">
                         </div>
                         <div class="col-sm-4">
                            <label>Email</label>
-                           <input type="text" class="input-md form-control">
+                           <input type="text" class="input-md form-control" value="{{user.email}}">
                         </div>
                      </div>
                      <div class="row">
 
                         <div class="col-sm-4">
                            <label>Contact Number</label>
-                           <input type="text" class="input-md form-control">
+                           <input type="text" class="input-md form-control" value="{{user.mobile}}">
                         </div>
                      </div>
               <div class="actions">
-                 <a class="btn flat btn-create">Save</a>
+                 <a class="btn flat btn-create">Update</a>
               </div>
                   </div>
                   <div class="tab-pane fade" id="user-profile-payments">
@@ -685,27 +685,39 @@ a {
          <div class="my-cart-list">
 
             <div class="my-cart-body">
-               <div class="my-item-details">
+                {% for item in cart_objs %}
+                {% ifchanged item.entry_timedate.date %}
+                <hr>
+                  <div class="twenty">{{item.entry_timedate}}</div>
+                     <div class="my-item-details">
                   <div class="fourty">
                      <a href="#">
-                         <img src="https://www.landscapeduniya.com/media/subcategory_images/7015.webp" border="0" class="my-item-image" style="height: 120px; width: 120px;">
+                         <img src="{{item.product.product_image.url}}" border="0" class="my-item-image" style="height: 120px; width: 120px;">
                      </a>
                   </div>
-                  <div class="twenty">Price: Rs. 40/kg</div>
-                  <div class="twenty">Quantity: 4</div>
-                  <div class="twenty">Total Price: Rs. 160
+                  <div class="twenty">Rate: Rs. {{item.product.selling_cost}}/{{item.product.selling_unit}}</div>
+                  <div class="twenty">Quantity: {{item.product_quantity}}</div>
+                  <div class="twenty">Total Price: Rs. {{item.product_cost}}</div>
 
-                  </div>
                </div>
-               <div class="my-item-details">
+                   {% else %}
+                                          <div class="my-item-details">
                   <div class="fourty">
-                     <a href="#"><img src="https://www.landscapeduniya.com/media/subcategory_images/2236.webp" border="0" class="my-item-image" style="height: 120px; width: 120px;"></a>
+                     <a href="#">
+                         <img src="{{item.product.product_image.url}}" border="0" class="my-item-image" style="height: 120px; width: 120px;">
+                     </a>
                   </div>
-                  <div class="twenty">Price: Rs. 40/kg</div>
-                  <div class="twenty">Quantity: 4</div>
-                  <div class="twenty">Total Price: Rs. 160
-                  </div>
+                  <div class="twenty">Rate: Rs. {{item.product.selling_cost}}/{{item.product.selling_unit}}</div>
+                  <div class="twenty">Quantity: {{item.product_quantity}}</div>
+                  <div class="twenty">Total Price: Rs. {{item.product_cost}}</div>
+
                </div>
+
+                   {% endifchanged %}
+
+                {% endfor %}
+
+
             </div>
          </div>
       </div>
