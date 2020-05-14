@@ -87,9 +87,13 @@ DATABASES = {
  'default': {
      'ENGINE': 'django.db.backends.mysql',
     'NAME': 'ecommerce_sam_db',
+    # 'NAME': 'tsit$ecommerce_sam_db',
     'USER': 'root',
+    # 'USER': 'tsit',
     'PASSWORD': '',
-    'HOST': '127.0.0.1',
+    # 'PASSWORD': 'rooney101',
+    # 'HOST': '127.0.0.1',
+    'HOST': 'tsit.mysql.pythonanywhere-services.com',
     'PORT': '3306',
     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
  }
