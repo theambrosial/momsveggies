@@ -71,6 +71,8 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body class="archive post-type-archive post-type-archive-product wp-custom-logo theme-astra woocommerce woocommerce-page woocommerce-no-js ehf-footer ehf-template-astra ehf-stylesheet-astra ast-desktop ast-separate-container ast-two-container ast-no-sidebar astra-2.4.3 ast-header-custom-item-outside columns-3 tablet-columns-3 mobile-columns-1 ast-woo-shop-archive ast-woocommerce-cart-menu ast-replace-site-logo-transparent ast-inherit-site-logo-transparent elementor-default elementor-kit-3049 astra-addon-2.4.1">
 <div class="hfeed site" id="page">
@@ -181,8 +183,8 @@ input[type=number]::-webkit-outer-spin-button {
  <br>
     <br>
 <div class="woocommerce-notices-wrapper"></div>
-    <form class="woocommerce-ordering" method="post">{% csrf_token %}
-        <select name="orderby_cat" class="orderby" aria-label="Shop order">
+    <div class="woocommerce-ordering" >
+        <select name="orderby_cat" onchange="choice5(this)" class="orderby" aria-label="Shop order">
             <option value="0" selected='selected'>Select Category</option>
 
             {% for item in allcategories %}
@@ -194,9 +196,11 @@ input[type=number]::-webkit-outer-spin-button {
 <!--        <option value="price">Sort by price: low to high</option>-->
 <!--        <option value="price-desc">Sort by price: high to low</option>-->
         </select>
+</div>
 
-    </form>
 
+
+<div id="rec_data">
 
 
     <ul class="products columns-3">
@@ -240,7 +244,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 {% endfor %}
     </ul>
-
+</div>
                 <div class="pagination">
     <span class="step-links">
         {% if lead_list.has_previous %}
@@ -276,7 +280,28 @@ input[type=number]::-webkit-outer-spin-button {
 
 </div>
     {% include 'base_templates/footer.html' %}
-</body>
+
+  <script>
+  function choice5(select) {
+
+
+    $.ajax({                       // initialize an AJAX request
+        url: "/load_category/",                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'orderby_cat': select.options[select.selectedIndex].value ,      // add the country id to the GET parameters
+
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+
+    $("#rec_data").html(data);
+
+
+        }
+      });
+}
+
+
+  </script>
 <script>
     function increaseValue() {
   var value = parseInt(document.getElementById('number').value, 10);
@@ -293,5 +318,7 @@ function decreaseValue() {
   document.getElementById('number').value = value;
 }
 </script>
+</body>
+
 <!-- Mirrored from websitedemos.net/organic-shop-02/shop/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 03 May 2020 20:26:17 GMT -->
 </html>

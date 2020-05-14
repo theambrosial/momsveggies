@@ -1,4 +1,8 @@
+import json
+
+from django.core import serializers
 from django.db.models import Q, F
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from cart_app.models import Cart_model, Cart_products
@@ -9,8 +13,21 @@ from django.core.paginator import Paginator
 from cart_app.views import notification_context
 
 
+def load_category(request):
+    if request.is_ajax():
+        print("done")
+        orderby = request.GET.get('orderby_cat')
+        products_list = Product_model.objects.filter(category__id=orderby).order_by('id')
+        print(products_list)
+        print(products_list)
+        paginator = Paginator(products_list, 9)
+        page = request.GET.get('page')
+        products_list = paginator.get_page(page)
+        context22 = {'all_products': products_list, }
+        return render(request, 'ajax/load_cat.html',context22)
+
 def all_products(request):
-    products_list = Product_model.objects.all()
+    products_list = Product_model.objects.all().order_by('id')
     paginator = Paginator(products_list, 9)
     page = request.GET.get('page')
     products_list = paginator.get_page(page)
@@ -98,8 +115,6 @@ def all_products(request):
                     item.cart_id = Cart_model.objects.get(id=main_cart.pk)
                     item.product_cost = float(Product_model.objects.get(id=product_id).selling_cost) * float(quantity)
                     item.save()
-
-
 
         if 'orderby_cat' in request.POST:
             orderby = request.POST.get('orderby_cat')
