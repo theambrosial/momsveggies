@@ -1,4 +1,4 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 from cart_app.models import Cart_products
 
@@ -18,7 +18,7 @@ def product_detail(request):
 def about_us(request):
     return render(request,'main/about.html')
 
-def logout(request):
+def logout_user(request):
 
     logout(request)
     return redirect('/')
