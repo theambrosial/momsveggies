@@ -202,15 +202,15 @@ input[type=number]::-webkit-outer-spin-button {
     <ul class="products columns-3">
 
         {% for item in all_products %}
-        <li class="ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple" style="  box-shadow: 10px 10px 8px grey;">
+        <li class="ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple" style=" box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
             <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
 
             <div class="astra-shop-thumbnail-wrap">
                 <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                    <img width="300" height="300" src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" sizes="(max-width: 300px) 100vw, 300px" />
+                    <img width="150" height="150" src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""  style="height: 370px; width: 370px;"/>
                 </a>
             </div>
-            <div class="astra-shop-summary-wrap">
+            <div class="astra-shop-summary-wrap" style="padding: 20px;">
                 <span class="ast-woo-product-category">
             {{item.category.name}} </span>
             <!--<a href="product_detail/{{item.slug}}" class="ast-loop-product__link">-->
@@ -219,7 +219,7 @@ input[type=number]::-webkit-outer-spin-button {
             <span class="price">
                 <span class="woocommerce-Price-amount amount">
                     <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
-            <div class="row"  style="padding: 20px;">
+            <div class="row"  style="padding: 10px;">
                 <div class="col-sm-7 col-md-7 col-lg-7" >
 
                                     <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
