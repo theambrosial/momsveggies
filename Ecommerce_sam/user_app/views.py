@@ -18,6 +18,11 @@ def product_detail(request):
 def about_us(request):
     return render(request,'main/about.html')
 
+def logout(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('/')
+
 def lost_password(request):
     if request.method == 'POST':
         user_login = request.POST.get('user_login')

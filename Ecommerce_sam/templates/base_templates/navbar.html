@@ -118,6 +118,9 @@ html{font-size:100%;}a,.page-title{color:#8bc34a;}a:hover,a:focus{color:#8bc34a;
 		<a title="" href="/account" aria-current="page">My account</a></li>
 	<li id="menu-item-471" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-471">
 		<a title="" href="/cart">Cart</a></li>
+	{% if user.is_authenticated %}
+	<li id="menu-item-47" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-47">
+		<a title="" href="/logout">Logout</a></li>{% endif %}
 </ul>
 </li>
 </ul></div></nav></div></div>			<div class="ast-masthead-custom-menu-items woocommerce-custom-menu-item">
