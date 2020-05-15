@@ -239,6 +239,8 @@ input[type=number]::-webkit-outer-spin-button {
 <div id="rec_data ">
 
 <style>
+
+
     .addTocart {
 
     background-color: #8bc34a;
@@ -256,6 +258,37 @@ input[type=number]::-webkit-outer-spin-button {
     }
 
 
+@media screen and (min-width: 768px) {
+.cardImage{
+max-height: 300px;
+min-height: 300px;
+}
+
+.ProductName{
+height: 50px;
+}
+
+}
+
+    @media screen and (max-width: 768px) {
+
+.MainCard {
+width:50%;
+}
+
+
+
+.cardImage{
+max-height: 150px;
+min-height: 150px;
+width: 100%;
+}
+
+.ProductName{
+height: 80px;
+}
+}
+
 </style>
 
 
@@ -263,9 +296,9 @@ input[type=number]::-webkit-outer-spin-button {
 <div class="row ">
             {% for item in all_products %}
 
-    <div class="col-sm-2 col-md-4 col-lg-4 content-desktop" style="padding:10px;">
+    <div class="col-sm-2 col-md-4 col-lg-4 MainCard" style="padding:10px;">
 
-        <div class="shadow">
+        <div class="shadow MainCardB">
 
 
 
@@ -273,14 +306,19 @@ input[type=number]::-webkit-outer-spin-button {
                    <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
 
                 <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                    <img src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""  style="height: 300px; width: 100%;"/>
+                    <img src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail cardImage" style=" width: 100%;"/>
                 </a>
                                   <div class="astra-shop-summary-wrap" style="padding: 20px;">
                 <span class="ast-woo-product-category">
             {{item.category.name}} </span>
+
+                                      <div class="ProductName">
+
             <!--<a href="product_detail/{{item.slug}}" class="ast-loop-product__link">-->
-                <h2 class="woocommerce-loop-product__title">{{item.name}}</h2>
+                <h2 class="woocommerce-loop-product__title ">{{item.name}}</h2>
             <!--</a>-->
+                                      </div>
+
             <span class="price">
                 <span class="woocommerce-Price-amount amount">
                     <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
@@ -300,68 +338,6 @@ input[type=number]::-webkit-outer-spin-button {
                 </div>
                 <input type="hidden" name="product_id" value="{{item.id}}">
                 <div class="col-sm-12 col-md-6 col-lg-6">
-<center>
-                    <button type="submit" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
-</center>
-                </div>
-
-            </div>
-
-            </div>
-
-           </form>
-        </div>
-
-    </div>
-
-{% endfor %}
-
-</div>
-
-    <div class="row ">
-            {% for item in all_products %}
-
-    <div class="col-sm-2 col-md-4 col-lg-4 content-mobile" style="padding:10px; width: 50%;">
-
-        <div class="shadow">
-
-
-
-
-                   <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
-
-                <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                    <img src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""  style="height: 150px; width: 100%;"/>
-                </a>
-                                  <div class="astra-shop-summary-wrap" style="padding: 10px;">
-                <span class="ast-woo-product-category" style="color: gray;">
-            {{item.category.name}} </span>
-            <!--<a href="product_detail/{{item.slug}}" class="ast-loop-product__link">-->
-
-
-                <h2 class="woocommerce-loop-product__title" style="font-size: 18px;">{{item.name}}</h2>
-
-
-            <!--</a>-->
-            <span class="price">
-                <span class="woocommerce-Price-amount amount">
-                    <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
-            <div class="row"  style="padding: 5px;">
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                    <center>
-
-<div style="margin-top: 20px;">
-
-                    <div class="value-button" id="decrease" onclick="decreaseValue({{forloop.counter}})" >-</div>
-                    <input type="number" class="num-button" id="number{{forloop.counter}}" name="quantity" value="1"  style="padding: 0.30em;"/>
-                    <div class="value-button" id="increase" onclick="increaseValue({{forloop.counter}})" >+</div>
-</div>
-
-                    </center>
-
-                </div>
-                <input type="hidden" name="product_id" value="{{item.id}}">
-                <div class="col-sm-4 col-md-4 col-lg-4">
 <center>
                     <button type="submit" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
 </center>
