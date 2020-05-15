@@ -15,10 +15,15 @@ def checkout(request):
         cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(id=request.session['available_cart_pk'],is_payment_done=False).id)
         cart_item_exist = True if cart_objs.count()>0 else False
         total_product_cost = cart_objs.aggregate(Sum('product_cost'))
+
     elif request.user.is_authenticated :
         cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(user_id=request.user.id,is_payment_done=False).id)
         cart_item_exist = True if cart_objs.count() > 0 else False
         total_product_cost=cart_objs.aggregate(Sum('product_cost'))
+    else:
+        cart_objs = None
+        cart_item_exist = False
+        total_product_cost = {'product_cost__sum': 0}
 
     context={
         'cart_objs':cart_objs,
@@ -34,6 +39,51 @@ def payment(request):
         if request.user.is_authenticated:
             user = request.user
         else:
+
+            if SiteUser.objects.filter(email=request.POST.get('billing_email')).count()>0:
+                request.POST = request.POST
+                if 'available_cart_pk' in request.session:
+                    cart_objs = Cart_model.objects.filter(id=request.session['available_cart_pk'],
+                                                          is_payment_done=False)
+                    cart_objs.update(user_id=request.user.id)
+                    cart_objs = Cart_products.objects.filter(
+                        cart_id=Cart_model.objects.get(id=request.session['available_cart_pk'], is_payment_done=False).id)
+                    cart_item_exist = True if cart_objs.count() > 0 else False
+                elif request.user.is_authenticated:
+                    cart_objs = Cart_products.objects.filter(
+                        cart_id=Cart_model.objects.get(user_id=request.user.id, is_payment_done=False).id)
+                    cart_item_exist = True if cart_objs.count() > 0 else False
+                context = {
+
+                    'total_product_cost': request.POST.get('total_product_cost'),
+                    'cart_objs': cart_objs,
+                    'cart_item_exist': cart_item_exist,
+                    'user_already_exist_email': True,
+                    'user_already_email': request.POST.get('billing_email')
+
+                }
+                return render(request, 'main/Checkout_main.html', context)
+            elif SiteUser.objects.filter(mobile=request.POST.get('billing_phone')).count()>0:
+                if 'available_cart_pk' in request.session:
+                    cart_objs = Cart_model.objects.filter(id=request.session['available_cart_pk'],
+                                                          is_payment_done=False)
+                    cart_objs.update(user_id=request.user.id)
+                    cart_objs = Cart_products.objects.filter(
+                        cart_id=Cart_model.objects.get(id=request.session['available_cart_pk'], is_payment_done=False).id)
+                    cart_item_exist = True if cart_objs.count() > 0 else False
+                elif request.user.is_authenticated:
+                    cart_objs = Cart_products.objects.filter(
+                        cart_id=Cart_model.objects.get(user_id=request.user.id, is_payment_done=False).id)
+                    cart_item_exist = True if cart_objs.count() > 0 else False
+                context = {
+                    'total_product_cost': request.POST.get('total_product_cost'),
+                    'cart_objs': cart_objs,
+                    'cart_item_exist': cart_item_exist,
+                    'user_already_exist_phone': True,
+                    'user_already_phone': request.POST.get('billing_phone')
+
+                }
+                return render(request, 'main/Checkout_main.html', context)
             generated_password = str(request.POST.get('billing_first_name'))[:3]+str(request.POST.get('billing_phone'))[5:]
             user = SiteUser()
             user.email = request.POST.get('billing_email')
@@ -172,11 +222,14 @@ def payment_confirmation(request,orders_rzp, orders):
             rzp_payment.cart_model_id = Cart_model.objects.get(id=cart_model_id)
             rzp_payment.save()
 
+            from common_utilities.email_utility import send_html_mail
+            html_content = '''
+                        <p>Payment Successful</p>
+                        <p> Thank You</p>
+                        '''
+            send_html_mail('Payment Successful - Moms Veggies', html_content, settings.EMAIL_HOST_USER,
+                           [request.user.email, ])
 
-
-
-
-            # To-do
         else:
             final_payment_status = False
             cart_model_obj = Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False)
@@ -191,6 +244,13 @@ def payment_confirmation(request,orders_rzp, orders):
             rzp_payment.order_placed_id = Order_placed.objects.get(id=int(orders))
             rzp_payment.cart_model_id = Cart_model.objects.get(id=cart_model_id)
             rzp_payment.save()
+            from common_utilities.email_utility import send_html_mail
+            html_content = '''
+                                    <p>Payment Unsuccessful</p>
+                                    <p> Thank You</p>
+                                    '''
+            send_html_mail('Payment Unsuccessful - Moms Veggies', html_content, settings.EMAIL_HOST_USER,
+                           [request.user.email, ])
 
 
         context = {

@@ -17,9 +17,13 @@ def load_category(request):
     if request.is_ajax():
         print("done")
         orderby = request.GET.get('orderby_cat')
-        products_list = Product_model.objects.filter(category__id=orderby).order_by('id')
+        if orderby == '0':
+            products_list = Product_model.objects.all().order_by('id')
+        else:
+            products_list = Product_model.objects.filter(category__id=orderby).order_by('id')
+
         print(products_list)
-        print(products_list)
+
         paginator = Paginator(products_list, 9)
         page = request.GET.get('page')
         products_list = paginator.get_page(page)

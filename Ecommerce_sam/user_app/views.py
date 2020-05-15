@@ -26,21 +26,36 @@ def logout_user(request):
 def lost_password(request):
     if request.method == 'POST':
         user_login = request.POST.get('user_login')
-        generated_password = SiteUser.objects.get(email=user_login)
-        generated_password2 = generated_password.mobile[:5]+generated_password.email[:2]+generated_password.first_name[:1]
-        user = SiteUser.objects.get(email=user_login)
-        user.password_text = generated_password2
-        user.set_password(generated_password2)
-        user.save(update_fields=['password_text','password'])
+        if SiteUser.objects.filter(email=user_login).count()>0:
+            generated_password = SiteUser.objects.get(email=user_login)
+            generated_password2 = generated_password.mobile[:5]+generated_password.email[:2]+generated_password.first_name[:1]
+            user = SiteUser.objects.get(email=user_login)
+            user.password_text = generated_password2
+            user.set_password(generated_password2)
+            user.save(update_fields=['password_text','password'])
 
-        html_content = '''
-                    <p>Login Using Below Password:</p>
-                    <p>Login Url: http://tsit.pythonanywhere.com/account/ </p>
-                    <p>Password : ''' + generated_password2 + '''</p>
-                    <p> Thank You</p>
-                    '''
-        send_html_mail('Password Reset Request - Moms Veggies', html_content, settings.EMAIL_HOST_USER,
-                       [user_login, ])
+            html_content = '''
+                        <p>Login Using Below Password:</p>
+                        <p>Login Url: http://tsit.pythonanywhere.com/account/ </p>
+                        <p>Password : ''' + generated_password2 + '''</p>
+                        <p> Thank You</p>
+                        '''
+            send_html_mail('Password Reset Request - Moms Veggies', html_content, settings.EMAIL_HOST_USER,
+                           [user_login, ])
+            context = {
+                'exist_email': True,
+                'user_already_email': user_login
+
+            }
+            return render(request, 'auth/lost_password.html', context)
+        else:
+
+            context = {
+                'user_does_exist_email': True,
+                'user_already_email': user_login
+
+            }
+            return render(request, 'auth/lost_password.html',context)
 
     return render(request,'auth/lost_password.html')
 

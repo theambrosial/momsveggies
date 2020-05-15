@@ -215,7 +215,7 @@ input[type=number]::-webkit-outer-spin-button {
     <br>
     <br>
             <select name="orderby_cat" onchange="choice5(this)" class="orderby form-control" aria-label="Shop order" style="padding:0px; width: 300px; font-size: 15px;">
-            <option value="0" selected='selected' style="font-size: 15px;">Select Category</option>
+            <option value="0" selected='selected' style="font-size: 15px;">All Category</option>
 
             {% for item in allcategories %}
         <option value="{{item.id}}" style="font-size: 15px;">{{item.name}}</option>
@@ -235,7 +235,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 
-<div id="rec_data ">
+
 
 <style>
 
@@ -301,7 +301,7 @@ height: 80px;
 <p>Date: <input type="text" id="datepicker"></p>
 
 
-<div class="row ">
+<div class="row " id="rec_data">
             {% for item in all_products %}
 
     <div class="col-sm-2 col-md-4 col-lg-4 MainCard" style="padding:10px;">
@@ -366,7 +366,7 @@ height: 80px;
 
 
 
-</div>
+
 
                 <div class="pagination">
     <span class="step-links">
