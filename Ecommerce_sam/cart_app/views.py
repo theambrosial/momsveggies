@@ -13,6 +13,10 @@ def cart(request):
         cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(user_id=request.user.id,is_payment_done=False).id)
         cart_item_exist = True if cart_objs.count() > 0 else False
         total_product_cost=cart_objs.aggregate(Sum('product_cost'))
+    else:
+        cart_objs = None
+        cart_item_exist = False
+        total_product_cost={'product_cost__sum':0}
 
     context={
         'cart_objs':cart_objs,
