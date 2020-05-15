@@ -50,7 +50,9 @@
 	<header class="entry-header ast-no-thumbnail ast-no-meta">
 
 
-		<h1 class="entry-title" itemprop="headline">Checkout</h1>	</header><!-- .entry-header -->
+		<h1 class="entry-title" itemprop="headline">Checkout</h1>
+	</header><!-- .entry-header -->
+	{% if cart_item_exist %}
 
 	<div class="entry-content clear" itemprop="text">
 
@@ -74,6 +76,7 @@
 	<div class="clear"></div>
 </form>
 <div class="woocommerce-notices-wrapper"></div>
+
 <form name="checkout" method="post" class="checkout woocommerce-checkout" action="/payment" enctype="multipart/form-data">{% csrf_token %}
 
 
@@ -542,8 +545,13 @@
 
 	</div><!-- .entry-content .clear -->
 
-
-
+	</div>
+	{% else %}
+	<p class="cart-empty woocommerce-info">Your cart is currently empty.</p>
+			<p class="return-to-shop">
+				<a class="button wc-backward" href="/">Return to shop		</a>
+			</p>
+	{% endif %}
 </article><!-- #post-## -->
 
 

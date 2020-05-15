@@ -216,7 +216,7 @@ input[type=number]::-webkit-outer-spin-button {
     <br>
     <br>
             <select name="orderby_cat" onchange="choice5(this)" class="orderby form-control" aria-label="Shop order" style="padding:0px; width: 300px; font-size: 15px;">
-            <option value="0" selected='selected' style="font-size: 15px;">Select Category</option>
+            <option value="0" selected='selected' style="font-size: 15px;">All Category</option>
 
             {% for item in allcategories %}
         <option value="{{item.id}}" style="font-size: 15px;">{{item.name}}</option>
