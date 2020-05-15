@@ -117,7 +117,23 @@ input[type=number]::-webkit-outer-spin-button {
 <div id="primary" class="content-area primary" style="background-color: white;">
 <main id="main" class="site-main" style="background-color: white;">
 <div class="" style="background-color: white;">
+     {% if not_in_cart %}
+           <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong> Product Quantity Cannot be "0", </strong>Increase Quantity and Try Again
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+        {% endif %}
 
+    {% if in_cart %}
+           <div class="alert alert-success alert-dismissible fade show" role="alert">
+  Added In Cart
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+        {% endif %}
     <section class="elementor-element elementor-element-a584ef8 elementor-section-content-middle elementor-reverse-mobile elementor-section-boxed elementor-section-height-default elementor-section-height-default elementor-section elementor-top-section" data-id="a584ef8" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;gradient&quot;}">
 <div class="elementor-background-overlay"></div>
 <div class="elementor-container elementor-column-gap-default">
@@ -211,6 +227,7 @@ input[type=number]::-webkit-outer-spin-button {
     <center>
 
     <h1 id="allproducts" class="elementor-heading-title elementor-size-default">All Products</h1>
+
     </center>
 
     <br>
@@ -329,7 +346,7 @@ height: 80px;
 <div style="margin-top: 20px;">
 
                     <div class="value-button" id="decrease" onclick="decreaseValue({{forloop.counter}})" >-</div>
-                    <input type="number" class="num-button" id="number{{forloop.counter}}" name="quantity" value="1"  style="padding: 0.30em;"/>
+                    <input type="number" class="num-button" id="number{{forloop.counter}}" min="0" name="quantity" value="0"  style="padding: 0.30em;"/>
                     <div class="value-button" id="increase" onclick="increaseValue({{forloop.counter}})" >+</div>
 </div>
 
