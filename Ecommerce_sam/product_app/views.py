@@ -23,7 +23,7 @@ def load_category(request):
             products_list = Product_model.objects.filter(category__id=orderby).order_by('id')
 
         print(products_list)
-        print(products_list)
+
         paginator = Paginator(products_list, 9)
         page = request.GET.get('page')
         products_list = paginator.get_page(page)

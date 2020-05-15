@@ -1,42 +1,59 @@
+{% for item in all_products %}
 
-    <ul class="products columns-3">
+    <div class="col-sm-2 col-md-4 col-lg-4 MainCard" style="padding:10px;">
 
-        {% for item in all_products %}
-        <li class="ast-col-sm-12 ast-article-post astra-woo-hover-zoom product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple" style=" box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
-            <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
+        <div class="shadow MainCardB">
 
-            <div class="astra-shop-thumbnail-wrap">
+
+
+
+                   <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
+
                 <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                    <img width="150" height="150" src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""  style="height: 370px; width: 370px;"/>
+                    <img src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail cardImage" style=" width: 100%;"/>
                 </a>
-            </div>
-            <div class="astra-shop-summary-wrap" style="padding: 20px;">
+                                  <div class="astra-shop-summary-wrap" style="padding: 20px;">
                 <span class="ast-woo-product-category">
             {{item.category.name}} </span>
+
+                                      <div class="ProductName">
+
             <!--<a href="product_detail/{{item.slug}}" class="ast-loop-product__link">-->
-                <h2 class="woocommerce-loop-product__title">{{item.name}}</h2>
+                <h2 class="woocommerce-loop-product__title ">{{item.name}}</h2>
             <!--</a>-->
+                                      </div>
+
             <span class="price">
                 <span class="woocommerce-Price-amount amount">
                     <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
             <div class="row"  style="padding: 10px;">
-                <div class="col-sm-7 col-md-7 col-lg-7" >
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <center>
 
-                                    <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
-                                      <input type="number" id="number" name="quantity" value="1" />
-                                    <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">+</div>
+<div style="margin-top: 20px;">
+
+                    <div class="value-button" id="decrease" onclick="decreaseValue({{forloop.counter}})" >-</div>
+                    <input type="number" class="num-button" id="number{{forloop.counter}}" name="quantity" value="1"  style="padding: 0.30em;"/>
+                    <div class="value-button" id="increase" onclick="increaseValue({{forloop.counter}})" >+</div>
+</div>
+
+                    </center>
 
                 </div>
                 <input type="hidden" name="product_id" value="{{item.id}}">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                    <button type="submit" name="add_to_cart" class="btn btn-success">Add to cart</button>
+                <div class="col-sm-12 col-md-6 col-lg-6">
+<center>
+                    <button type="submit" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
+</center>
                 </div>
 
             </div>
 
             </div>
-                </form>
-        </li>
+
+           </form>
+        </div>
+
+    </div>
 
 {% endfor %}
-    </ul>
