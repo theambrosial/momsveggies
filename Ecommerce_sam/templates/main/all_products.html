@@ -108,7 +108,6 @@ input[type=number]::-webkit-outer-spin-button {
 </head>
 <body class="archive post-type-archive post-type-archive-product wp-custom-logo theme-astra woocommerce woocommerce-page woocommerce-no-js ehf-footer ehf-template-astra ehf-stylesheet-astra ast-desktop ast-separate-container ast-two-container ast-no-sidebar astra-2.4.3 ast-header-custom-item-outside columns-3 tablet-columns-3 mobile-columns-1 ast-woo-shop-archive ast-woocommerce-cart-menu ast-replace-site-logo-transparent ast-inherit-site-logo-transparent elementor-default elementor-kit-3049 astra-addon-2.4.1">
 <div class="hfeed site" id="page">
-<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
  {% include 'base_templates/navbar.html' %}
 
 
@@ -291,6 +290,15 @@ height: 80px;
 
 </style>
 
+
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+
+
+<p>Date: <input type="text" id="datepicker"></p>
 
 
 <div class="row ">
