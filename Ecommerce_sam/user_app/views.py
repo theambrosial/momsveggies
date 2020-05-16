@@ -6,7 +6,7 @@ from Ecommerce_sam import settings
 from common_utilities.email_utility import send_html_mail
 
 from .models import SiteUser
-
+from django.utils.http import is_safe_url
 
 def home(request):
     return render(request,'main/home.html')
@@ -76,7 +76,19 @@ def account(request):
             user = authenticate(request, mobile=username, password=password)
             if user is not None:
                 login(request, user)
-            return redirect('/account/')
+                next = request.GET.get('next', '/')
+                if not is_safe_url(next, allowed_hosts=None):
+                    next = '/'
+                return redirect(next)
+                # return redirect('/account/')
+            else:
+
+                context = {
+                    'does_not_exist_user': True,
+                    'cart_objs': None,
+                }
+                return render(request, 'main/account.html', context)
+
         context = {
             'cart_objs': None,
         }

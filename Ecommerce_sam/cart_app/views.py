@@ -10,9 +10,18 @@ def cart(request):
         cart_item_exist = True if cart_objs.count()>0 else False
         total_product_cost = cart_objs.aggregate(Sum('product_cost'))
     elif request.user.is_authenticated :
-        cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(user_id=request.user.id,is_payment_done=False).id)
-        cart_item_exist = True if cart_objs.count() > 0 else False
-        total_product_cost=cart_objs.aggregate(Sum('product_cost'))
+        cart_model = Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False)
+        if cart_model.count()>0:
+            for item in cart_model:
+                cart_pk = item.pk
+            cart_objs = Cart_products.objects.filter(cart_id=cart_pk)
+            cart_item_exist = True if cart_objs.count() > 0 else False
+            total_product_cost=cart_objs.aggregate(Sum('product_cost'))
+        else:
+            cart_objs = None
+            cart_item_exist = False
+            total_product_cost = {'product_cost__sum': 0}
+
     else:
         cart_objs = None
         cart_item_exist = False

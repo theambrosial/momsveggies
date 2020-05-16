@@ -111,11 +111,11 @@ html{font-size:100%;}a,.page-title{color:#8bc34a;}a:hover,a:focus{color:#8bc34a;
 <li id="menu-item-344" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-344"><a title="" href="/about_us">About Us</a></li>
 <!--<li id="menu-item-337" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-337"><a title="						" href="../contact/index.html">Contact</a></li>-->
 <li id="menu-item-470" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children ">
-	<a title="" href="#">Account</a><button class="ast-menu-toggle" aria-expanded="false"><i class="fa fa-angle-down" aria-hidden="true"></i>
+	<a title="" href="/account/?next={{ request.get_full_path }}">Account</a><button class="ast-menu-toggle" aria-expanded="false"><i class="fa fa-angle-down" aria-hidden="true"></i>
 </button>
 <ul class="sub-menu">
 	<li id="menu-item-472" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-99 current_page_item menu-item-472">
-		<a title="" href="/account" aria-current="page">My account</a></li>
+		<a title="" href="/account/?next={{ request.get_full_path }}" aria-current="page">My account</a></li>
 	<li id="menu-item-471" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-471">
 		<a title="" href="/cart">Cart</a></li>
 	{% if user.is_authenticated %}
