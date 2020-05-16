@@ -47,7 +47,6 @@ def payment(request):
         if request.user.is_authenticated:
             user = request.user
         else:
-
             if SiteUser.objects.filter(email=request.POST.get('billing_email')).count()>0:
                 request.POST = request.POST
                 if 'available_cart_pk' in request.session:
@@ -153,19 +152,20 @@ def payment(request):
         orders.save()
 
         if request.user.is_authenticated:
+            cart_latest = Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False).order_by('-id')[0]
             cart_objs = Cart_products.objects.filter(
-                cart_id=Cart_model.objects.get(user_id=request.user.id, is_payment_done=False).id)
+                cart_id=cart_latest.id)
             cart_item_exist = True if cart_objs.count() > 0 else False
             total_product_cost = cart_objs.aggregate(Sum('product_cost'))
 
         elif 'available_cart_pk' in request.session:
-            cart_objs = Cart_model.objects.filter(id=request.session['available_cart_pk'], is_payment_done=False)
+            cart_objs = Cart_model.objects.filter(id=request.session['available_cart_pk'], is_payment_done=False).order_by('-id')[0]
             cart_objs.update(user_id=request.user.id)
-            cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(user_id=request.user.id,is_payment_done=False).id)
+            cart_objs = Cart_products.objects.filter(cart_id=cart_objs.id)
 
             cart_item_exist = True if cart_objs.count()>0 else False
             total_product_cost = cart_objs.aggregate(Sum('product_cost'))
-            
+
         # elif request.user.is_authenticated :
         #     cart_objs = Cart_products.objects.filter(cart_id=Cart_model.objects.get(user_id=request.user.id,is_payment_done=False).id)
         #     cart_item_exist = True if cart_objs.count() > 0 else False
