@@ -1,59 +1,56 @@
-{% for item in all_products %}
+  {% for item in all_products %}
 
-    <div class="col-sm-2 col-md-4 col-lg-4 MainCard" style="padding:10px;">
+<li class="ast-article-single product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
+    <div class="astra-shop-thumbnail-wrap">
+    <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+        <img src="{{item.product_image.url}}" class="cardImage attachment-woocommerce_thumbnail size-woocommerce_thumbnail" />
+    </a>
+</div>
 
-        <div class="shadow MainCardB">
+<center>
 
-
-
-
-                   <form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
-
-                <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                    <img src="{{item.product_image.url}}" class="attachment-woocommerce_thumbnail cardImage" style=" width: 100%;"/>
-                </a>
-                                  <div class="astra-shop-summary-wrap" style="padding: 20px;">
-                <span class="ast-woo-product-category">
-            {{item.category.name}} </span>
-
-                                      <div class="ProductName">
-
-            <!--<a href="product_detail/{{item.slug}}" class="ast-loop-product__link">-->
-                <h2 class="woocommerce-loop-product__title ">{{item.name}}</h2>
-            <!--</a>-->
-                                      </div>
-
-            <span class="price">
-                <span class="woocommerce-Price-amount amount">
-                    <span class="woocommerce-Price-currencySymbol">Rs</span>{{item.selling_cost}}/{{item.selling_unit}}</span> </span>
-            <div class="row"  style="padding: 10px;">
-                <div class="col-sm-12 col-md-6 col-lg-6">
+    <div class="astra-shop-summary-wrap">
+        <span class="ast-woo-product-category">
+{{item.category.name}}
+        </span>
+<a href="product/assorted-coffee/index.html" class="ast-loop-product__link">
+    <h2 class="woocommerce-loop-product__title">{{item.name}}</h2>
+</a>
+<span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rs. </span>{{item.selling_cost}}/{{item.selling_unit}}</span></span>
+</div>
+                <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
                     <center>
 
 <div style="margin-top: 20px;">
 
                     <div class="value-button" id="decrease" onclick="decreaseValue({{forloop.counter}})" >-</div>
-                    <input type="number" class="num-button" id="number{{forloop.counter}}" name="quantity" value="1"  style="padding: 0.30em;"/>
+                    <input type="number" class="num-button" id="number{{forloop.counter}}" min="0" name="quantity" value="0"  style="padding: 0.30em;"/>
                     <div class="value-button" id="increase" onclick="increaseValue({{forloop.counter}})" >+</div>
 </div>
 
                     </center>
 
                 </div>
-                <input type="hidden" name="product_id" value="{{item.id}}">
-                <div class="col-sm-12 col-md-6 col-lg-6">
+                <input type="hidden" id="product_id{{forloop.counter}}" name="product_id" value="{{item.id}}">
+                <div class="col-sm-12 col-md-12 col-lg-12">
 <center>
-                    <button type="submit" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
+                    <button type="submit" onclick="add_to_cart({{forloop.counter}})" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
+
+      <svg style="display:none;" id="added_in_cart{{forloop.counter}}" class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+          <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
+
+
+
+
 </center>
                 </div>
 
             </div>
-
-            </div>
-
-           </form>
-        </div>
-
-    </div>
+<!--    </form>-->
+    </center>
+</li>
 
 {% endfor %}

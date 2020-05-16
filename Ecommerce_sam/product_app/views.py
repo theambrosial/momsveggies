@@ -107,16 +107,35 @@ def add_to_cart_ajax(request):
 
     return render(request, 'ajax/load_cart.html',context22)
 
+
+def load_search_res(request):
+    if request.is_ajax():
+
+
+        search_query = request.GET.get('search_query')
+
+        products_list = Product_model.objects.filter(
+            Q(name__icontains=search_query) | Q(tags__icontains=search_query) | Q(
+                category__name__icontains=search_query))
+
+
+
+        paginator = Paginator(products_list, 9)
+        page = request.GET.get('page')
+        products_list = paginator.get_page(page)
+        context22 = {'all_products': products_list, }
+        return render(request, 'ajax/load_cat.html', context22)
+
+
 def load_category(request):
     if request.is_ajax():
-        print("done")
+
         orderby = request.GET.get('orderby_cat')
         if orderby == '0':
             products_list = Product_model.objects.all().order_by('id')
         else:
             products_list = Product_model.objects.filter(category__id=orderby).order_by('id')
 
-        print(products_list)
 
         paginator = Paginator(products_list, 9)
         page = request.GET.get('page')
@@ -228,6 +247,7 @@ def all_products(request):
                 # context.update(context22)
                 # notification_context(request)
                 # print('callled Notif Context')
+
 
 
         if 'orderby_cat' in request.POST:
