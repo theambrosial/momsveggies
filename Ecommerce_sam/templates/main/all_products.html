@@ -38,6 +38,33 @@
    .content-desktop {display: none;}
     .content-mobile {display: block;}
 }
+
+
+
+/* Styles for wrapping the search box */
+
+.main {
+    width: 60%;
+    margin: 50px auto;
+}
+
+/* Bootstrap 4 text input with search icon */
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.575rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
 </style>
 
 <style>
@@ -229,9 +256,21 @@ input[type=number]::-webkit-outer-spin-button {
 
     </center>
 
-    <br>
-    <br>
-            <select name="orderby_cat" onchange="choice5(this)" class="orderby form-control" aria-label="Shop order" style="padding:0px; width: 300px; font-size: 15px;">
+    <div class="main">
+  <!-- Another variation with a button -->
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Search...">
+    <div class="input-group-append">
+      <button class="btn btn-success" type="button" style="background-color: #8bc34a;">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+
+
+</div>
+    <center>
+            <select name="orderby_cat" onchange="choice5(this)" class="orderby form-control" aria-label="Shop order" style="padding:0px; width: 250px; font-size: 15px;">
             <option value="0" selected='selected' style="font-size: 15px;">All Category</option>
 
             {% for item in allcategories %}
@@ -243,6 +282,9 @@ input[type=number]::-webkit-outer-spin-button {
 <!--        <option value="price">Sort by price: low to high</option>-->
 <!--        <option value="price-desc">Sort by price: high to low</option>-->
         </select>
+
+
+    </center>
  <br>
     <br>
 <div class="woocommerce-notices-wrapper"></div>
@@ -320,9 +362,11 @@ height: 80px;
 
 <div class="elementor-element elementor-element-71c3b8d elementor-widget elementor-widget-shortcode" data-id="71c3b8d" data-element_type="widget" data-widget_type="shortcode.default">
 <div class="elementor-widget-container">
-<div class="elementor-shortcode"><div class="woocommerce columns-4 ">
+<div class="elementor-shortcode">
 
-    <ul class="products columns-4">
+    <div class="woocommerce columns-4 ">
+
+    <ul class="products columns-4" style="margin-right: -17px;">
 
 
       {% for item in all_products %}
@@ -334,6 +378,8 @@ height: 80px;
         <img src="{{item.product_image.url}}" class="cardImage attachment-woocommerce_thumbnail size-woocommerce_thumbnail" />
     </a>
 </div>
+
+<center>
 
     <div class="astra-shop-summary-wrap">
         <span class="ast-woo-product-category">
@@ -371,7 +417,12 @@ height: 80px;
 {% endfor %}
 
 </ul>
-</div> </div>
+</div>
+
+
+</center>
+
+</div>
 </div>
 </div>
 </div>
