@@ -13,6 +13,100 @@ from django.core.paginator import Paginator
 from cart_app.views import notification_context
 
 
+def add_to_cart_ajax(request):
+    if request.is_ajax():
+        quantity = request.GET.get('quantity')
+        product_id = request.GET.get('product_id')
+
+        if request.user.is_authenticated:
+            available_cart = Cart_model.objects.filter(user_id=request.user.pk, is_payment_done=False)
+            if available_cart.count() > 0:
+                for item in available_cart:
+                    main_c_pk = item.pk
+                req_product_obj = Product_model.objects.get(id=product_id)
+                cart_product_obj = Cart_products.objects.filter(product=req_product_obj, cart_id=main_c_pk)
+                # update product quantity if product already exist in cart
+                if cart_product_obj.count() > 0:
+
+                    cart_product_obj.update(product_quantity=F('product_quantity') + quantity)
+                    cart_product_obj.update(product_cost=req_product_obj.selling_cost * F('product_quantity'))
+
+                else:
+                    # create new product if product does not exist in cart
+                    item = Cart_products()
+                    item.product = req_product_obj
+                    item.product_quantity = quantity
+                    item.cart_id = Cart_model.objects.get(id=main_c_pk)
+                    item.product_cost = req_product_obj.selling_cost * float(quantity)
+                    item.save()
+            else:
+                main_cart = Cart_model()
+                main_cart.total_cost = 0.0
+                main_cart.total_quantity = 0.0
+                main_cart.user_id = request.user
+                main_cart.save()
+                req_product_obj = Product_model.objects.get(id=product_id)
+
+                item = Cart_products()
+                item.product = req_product_obj
+                item.product_quantity = quantity
+                item.cart_id = Cart_model.objects.get(id=main_cart.pk)
+                item.product_cost = req_product_obj.selling_cost * float(quantity)
+                item.save()
+
+        else:
+
+            if 'available_cart_pk' in request.session:
+                available_cart = Cart_model.objects.filter(id=request.session['available_cart_pk'],
+                                                           is_payment_done=False)
+                if available_cart.count() > 0:
+
+                    for item in available_cart:
+                        main_c_pk = item.pk
+                    req_product_obj = Product_model.objects.get(id=product_id)
+                    cart_product_obj = Cart_products.objects.filter(product=req_product_obj, cart_id=main_c_pk)
+                    # update product quantity if product already exist in cart
+                    if cart_product_obj.count() > 0:
+                        print("executing else 0bjyhg")
+                        cart_product_obj.update(product_quantity=F('product_quantity') + quantity)
+                        cart_product_obj.update(product_cost=req_product_obj.selling_cost * F('product_quantity'))
+                    else:
+                        item = Cart_products()
+                        item.product = req_product_obj
+                        item.product_quantity = quantity
+                        item.cart_id = Cart_model.objects.get(id=request.session['available_cart_pk'])
+                        item.product_cost = req_product_obj.selling_cost * float(quantity)
+                        item.save()
+
+            elif 'available_cart_pk' not in request.session:
+                if not request.session.session_key:
+                    request.session.create()
+                session_id = request.session.session_key
+                main_cart = Cart_model()
+                main_cart.total_cost = 0.0
+                main_cart.total_quantity = 0.0
+                main_cart.session_id = session_id
+                main_cart.save()
+
+                request.session['available_cart_pk'] = main_cart.pk
+
+                item = Cart_products()
+                item.product = Product_model.objects.get(id=product_id)
+                item.product_quantity = quantity
+                item.cart_id = Cart_model.objects.get(id=main_cart.pk)
+                item.product_cost = float(Product_model.objects.get(id=product_id).selling_cost) * float(quantity)
+                item.save()
+        context22 = {
+            'in_cart': True
+        }
+
+        con2=notification_context(request)
+        print('callled Notif Context22')
+        context22.update(con2)
+        print(context22)
+
+    return render(request, 'ajax/load_cart.html',context22)
+
 def load_category(request):
     if request.is_ajax():
         print("done")
@@ -43,95 +137,98 @@ def all_products(request):
             quantity = request.POST.get('quantity')
             product_id = request.POST.get('product_id')
 
-            if quantity == '0':
-                context22={
-                    'not_in_cart':True
-                }
-                context.update(context22)
-            else:
+            # if quantity == '0':
+            #     context22={
+            #         'not_in_cart':True
+            #     }
+            #     context.update(context22)
+            # else:
 
 
-                if request.user.is_authenticated:
-                    available_cart = Cart_model.objects.filter(user_id=request.user.pk, is_payment_done=False)
-                    if available_cart.count() > 0:
-                        for item in available_cart:
-                            main_c_pk = item.pk
-                        req_product_obj = Product_model.objects.get(id=product_id)
-                        cart_product_obj = Cart_products.objects.filter(product=req_product_obj,cart_id=main_c_pk)
-                        # update product quantity if product already exist in cart
-                        if cart_product_obj.count()>0:
+                # if request.user.is_authenticated:
+                #     available_cart = Cart_model.objects.filter(user_id=request.user.pk, is_payment_done=False)
+                #     if available_cart.count() > 0:
+                #         for item in available_cart:
+                #             main_c_pk = item.pk
+                #         req_product_obj = Product_model.objects.get(id=product_id)
+                #         cart_product_obj = Cart_products.objects.filter(product=req_product_obj,cart_id=main_c_pk)
+                #         # update product quantity if product already exist in cart
+                #         if cart_product_obj.count()>0:
+                #
+                #             cart_product_obj.update(product_quantity=F('product_quantity') + quantity)
+                #             cart_product_obj.update(product_cost= req_product_obj.selling_cost * F('product_quantity'))
+                #
+                #         else:
+                #             # create new product if product does not exist in cart
+                #             item = Cart_products()
+                #             item.product = req_product_obj
+                #             item.product_quantity = quantity
+                #             item.cart_id = Cart_model.objects.get(id=main_c_pk)
+                #             item.product_cost = req_product_obj.selling_cost * float(quantity)
+                #             item.save()
+                #     else:
+                #         main_cart = Cart_model()
+                #         main_cart.total_cost = 0.0
+                #         main_cart.total_quantity = 0.0
+                #         main_cart.user_id = request.user
+                #         main_cart.save()
+                #         req_product_obj = Product_model.objects.get(id=product_id)
+                #
+                #         item = Cart_products()
+                #         item.product = req_product_obj
+                #         item.product_quantity = quantity
+                #         item.cart_id = Cart_model.objects.get(id=main_cart.pk)
+                #         item.product_cost = req_product_obj.selling_cost * float(quantity)
+                #         item.save()
+                #
+                # else:
+                #
+                #     if 'available_cart_pk' in request.session:
+                #         available_cart = Cart_model.objects.filter(id=request.session['available_cart_pk'], is_payment_done=False)
+                #         if available_cart.count() > 0:
+                #
+                #             for item in available_cart:
+                #                 main_c_pk = item.pk
+                #             req_product_obj = Product_model.objects.get(id=product_id)
+                #             cart_product_obj = Cart_products.objects.filter(product=req_product_obj,cart_id=main_c_pk)
+                #             # update product quantity if product already exist in cart
+                #             if cart_product_obj.count() > 0:
+                #                 print("executing else 0bjyhg")
+                #                 cart_product_obj.update(product_quantity=F('product_quantity') + quantity)
+                #                 cart_product_obj.update(product_cost=req_product_obj.selling_cost * F('product_quantity'))
+                #             else:
+                #                 item = Cart_products()
+                #                 item.product = req_product_obj
+                #                 item.product_quantity = quantity
+                #                 item.cart_id = Cart_model.objects.get(id=request.session['available_cart_pk'])
+                #                 item.product_cost = req_product_obj.selling_cost * float(quantity)
+                #                 item.save()
+                #
+                #     elif 'available_cart_pk' not in request.session:
+                #         if not request.session.session_key:
+                #             request.session.create()
+                #         session_id = request.session.session_key
+                #         main_cart = Cart_model()
+                #         main_cart.total_cost = 0.0
+                #         main_cart.total_quantity = 0.0
+                #         main_cart.session_id = session_id
+                #         main_cart.save()
+                #
+                #         request.session['available_cart_pk'] = main_cart.pk
+                #
+                #         item = Cart_products()
+                #         item.product = Product_model.objects.get(id=product_id)
+                #         item.product_quantity = quantity
+                #         item.cart_id = Cart_model.objects.get(id=main_cart.pk)
+                #         item.product_cost = float(Product_model.objects.get(id=product_id).selling_cost) * float(quantity)
+                #         item.save()
+                # context22 = {
+                #     'in_cart': True
+                # }
+                # context.update(context22)
+                # notification_context(request)
+                # print('callled Notif Context')
 
-                            cart_product_obj.update(product_quantity=F('product_quantity') + quantity)
-                            cart_product_obj.update(product_cost= req_product_obj.selling_cost * F('product_quantity'))
-
-                        else:
-                            # create new product if product does not exist in cart
-                            item = Cart_products()
-                            item.product = req_product_obj
-                            item.product_quantity = quantity
-                            item.cart_id = Cart_model.objects.get(id=main_c_pk)
-                            item.product_cost = req_product_obj.selling_cost * float(quantity)
-                            item.save()
-                    else:
-                        main_cart = Cart_model()
-                        main_cart.total_cost = 0.0
-                        main_cart.total_quantity = 0.0
-                        main_cart.user_id = request.user
-                        main_cart.save()
-                        req_product_obj = Product_model.objects.get(id=product_id)
-
-                        item = Cart_products()
-                        item.product = req_product_obj
-                        item.product_quantity = quantity
-                        item.cart_id = Cart_model.objects.get(id=main_cart.pk)
-                        item.product_cost = req_product_obj.selling_cost * float(quantity)
-                        item.save()
-
-                else:
-
-                    if 'available_cart_pk' in request.session:
-                        available_cart = Cart_model.objects.filter(id=request.session['available_cart_pk'], is_payment_done=False)
-                        if available_cart.count() > 0:
-
-                            for item in available_cart:
-                                main_c_pk = item.pk
-                            req_product_obj = Product_model.objects.get(id=product_id)
-                            cart_product_obj = Cart_products.objects.filter(product=req_product_obj,cart_id=main_c_pk)
-                            # update product quantity if product already exist in cart
-                            if cart_product_obj.count() > 0:
-                                print("executing else 0bjyhg")
-                                cart_product_obj.update(product_quantity=F('product_quantity') + quantity)
-                                cart_product_obj.update(product_cost=req_product_obj.selling_cost * F('product_quantity'))
-                            else:
-                                item = Cart_products()
-                                item.product = req_product_obj
-                                item.product_quantity = quantity
-                                item.cart_id = Cart_model.objects.get(id=request.session['available_cart_pk'])
-                                item.product_cost = req_product_obj.selling_cost * float(quantity)
-                                item.save()
-
-                    elif 'available_cart_pk' not in request.session:
-                        if not request.session.session_key:
-                            request.session.create()
-                        session_id = request.session.session_key
-                        main_cart = Cart_model()
-                        main_cart.total_cost = 0.0
-                        main_cart.total_quantity = 0.0
-                        main_cart.session_id = session_id
-                        main_cart.save()
-
-                        request.session['available_cart_pk'] = main_cart.pk
-
-                        item = Cart_products()
-                        item.product = Product_model.objects.get(id=product_id)
-                        item.product_quantity = quantity
-                        item.cart_id = Cart_model.objects.get(id=main_cart.pk)
-                        item.product_cost = float(Product_model.objects.get(id=product_id).selling_cost) * float(quantity)
-                        item.save()
-                context22 = {
-                    'in_cart': True
-                }
-                context.update(context22)
 
         if 'orderby_cat' in request.POST:
             orderby = request.POST.get('orderby_cat')

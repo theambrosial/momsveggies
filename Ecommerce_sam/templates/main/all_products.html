@@ -102,6 +102,56 @@ input[type=number]::-webkit-outer-spin-button {
 
 }
 </style>
+    <style>
+        .checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #7ac142;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  margin: 2% auto;
+  box-shadow: inset 0px 0px 0px #7ac142;
+  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #7ac142;
+  }
+}
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel=“stylesheet” href=“https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto.min.css”></i>
 
@@ -117,7 +167,7 @@ input[type=number]::-webkit-outer-spin-button {
 <main id="main" class="site-main" style="background-color: white;">
 <div class="" style="background-color: white;">
      {% if not_in_cart %}
-           <div class="alert alert-danger alert-dismissible fade show" role="alert">
+           <div  class="alert alert-danger alert-dismissible fade show" role="alert">
   <strong> Product Quantity Cannot be "0", </strong>Increase Quantity and Try Again
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
@@ -125,14 +175,11 @@ input[type=number]::-webkit-outer-spin-button {
 </div>
         {% endif %}
 
-    {% if in_cart %}
-           <div class="alert alert-success alert-dismissible fade show" role="alert">
-  Added In Cart
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+
+
+
 </div>
-        {% endif %}
+
     <section class="elementor-element elementor-element-a584ef8 elementor-section-content-middle elementor-reverse-mobile elementor-section-boxed elementor-section-height-default elementor-section-height-default elementor-section elementor-top-section" data-id="a584ef8" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;gradient&quot;}">
 <div class="elementor-background-overlay"></div>
 <div class="elementor-container elementor-column-gap-default">
@@ -328,7 +375,7 @@ height: 80px;
       {% for item in all_products %}
 
 <li class="ast-article-single product type-product post-168 status-publish first instock product_cat-groceries has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
-<form action="" method="post" enctype='multipart/form-data'>{% csrf_token %}
+<!--<form action="" method="post" id="cart_form" enctype='multipart/form-data'>{% csrf_token %}-->
     <div class="astra-shop-thumbnail-wrap">
     <a href="{{item.product_image.url}}" target="_blank" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
         <img src="{{item.product_image.url}}" class="cardImage attachment-woocommerce_thumbnail size-woocommerce_thumbnail" />
@@ -358,14 +405,24 @@ height: 80px;
                     </center>
 
                 </div>
-                <input type="hidden" name="product_id" value="{{item.id}}">
+                <input type="hidden" id="product_id{{forloop.counter}}" name="product_id" value="{{item.id}}">
                 <div class="col-sm-12 col-md-12 col-lg-12">
 <center>
-                    <button type="submit" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
+                    <button type="submit" onclick="add_to_cart({{forloop.counter}})" name="add_to_cart" class="addTocart" style="margin-top: 20px;">Add to cart</button>
+
+      <svg style="display:none;" id="added_in_cart{{forloop.counter}}" class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+          <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
+
+
+
+
 </center>
                 </div>
 
-            </div>   </form>
+            </div>
+<!--    </form>-->
 </li>
 
 {% endfor %}
@@ -417,6 +474,36 @@ height: 80px;
 
 </div>
     {% include 'base_templates/footer.html' %}
+
+<script>
+    function add_to_cart(idd){
+    var quantity = parseInt(document.getElementById('number'+idd).value, 10);
+    var product_id = parseInt(document.getElementById('product_id'+idd).value, 10);
+    if (quantity == 0){
+     alert("Product Quantity Must Be Greater Than 0");
+    }
+    else{
+         $.ajax({
+        url: "/add_to_cart_ajax/",
+        data: {
+          'quantity': quantity,
+          'product_id': product_id
+        },
+        success: function (data) {
+
+        $("#ast-site-header-cart").html(data);
+        $("#added_in_cart"+idd).css("display", "none");
+        $("#added_in_cart"+idd).css("display", "block");
+
+        }
+      });
+    }
+
+
+}
+</script>
+
+
 
   <script>
   function choice5(select) {
