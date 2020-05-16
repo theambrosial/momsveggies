@@ -60,13 +60,13 @@
 	{% if user_already_exist_email %}
 	<p style="border-top-color: #f60707;" class="cart-empty woocommerce-info">Email : {{user_already_email}} Is Already Registered With Us, Click Below To Login</p>
 			<p class="return-to-shop">
-				<a class="button wc-backward" href="/account/?next={{ request.get_full_path }}">Login		</a>
+				<a class="button wc-backward" href="/account/?next=/checkout/">Login		</a>
 			</p>
 	{% endif %}
 	{% if user_already_exist_phone %}
 	<p style="border-top-color: #f60707;" class="cart-empty woocommerce-info">Mobile Number : {{user_already_phone}} Is Already Registered With Us, Click Below To Login</p>
 			<p class="return-to-shop">
-				<a class="button wc-backward" href="/account/?next={{ request.get_full_path }}">Login		</a>
+				<a class="button wc-backward" href="/account/?next=/checkout/">Login		</a>
 			</p>
 	{% endif %}
 	{% if cart_item_exist %}
