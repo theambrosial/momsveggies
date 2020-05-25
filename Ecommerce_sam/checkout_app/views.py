@@ -152,9 +152,13 @@ def payment(request):
         orders.save()
 
         if request.user.is_authenticated:
+            cart_latest = Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False)
+            max_count = cart_latest.count()
+            for i in range(1,max_count+1):
+                Cart_model.objects.filter(id=Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False).order_by('-id')[i].id).delete()
             cart_latest = Cart_model.objects.filter(user_id=request.user.id, is_payment_done=False).order_by('-id')[0]
-            cart_objs = Cart_products.objects.filter(
-                cart_id=cart_latest.id)
+
+            cart_objs = Cart_products.objects.filter(cart_id=cart_latest.id)
             cart_item_exist = True if cart_objs.count() > 0 else False
             total_product_cost = cart_objs.aggregate(Sum('product_cost'))
 
