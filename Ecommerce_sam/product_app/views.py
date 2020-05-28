@@ -145,7 +145,7 @@ def load_category(request):
 
 def all_products(request):
     products_list = Product_model.objects.all().order_by('id')
-    paginator = Paginator(products_list, 9)
+    paginator = Paginator(products_list, 12)
     page = request.GET.get('page')
     products_list = paginator.get_page(page)
     allcategories = Category.objects.all()
@@ -155,15 +155,12 @@ def all_products(request):
         if 'add_to_cart' in request.POST:
             quantity = request.POST.get('quantity')
             product_id = request.POST.get('product_id')
-
             # if quantity == '0':
             #     context22={
             #         'not_in_cart':True
             #     }
             #     context.update(context22)
             # else:
-
-
                 # if request.user.is_authenticated:
                 #     available_cart = Cart_model.objects.filter(user_id=request.user.pk, is_payment_done=False)
                 #     if available_cart.count() > 0:
@@ -247,9 +244,6 @@ def all_products(request):
                 # context.update(context22)
                 # notification_context(request)
                 # print('callled Notif Context')
-
-
-
         if 'orderby_cat' in request.POST:
             orderby = request.POST.get('orderby_cat')
 
@@ -263,14 +257,12 @@ def all_products(request):
             #     products_list = Product_model.objects.all().order_by('-selling_cost')
             # elif orderby == 'popularity':
             #     products_list = Product_model.objects.all().order_by('popularity')
-            paginator = Paginator(products_list, 9)
+            paginator = Paginator(products_list, 12)
             page = request.GET.get('page')
             products_list = paginator.get_page(page)
             context22 = {'all_products': products_list, }
             context.update(context22)
             # return redirect('/')
-
-
 
     context2={
         'all_products':products_list,

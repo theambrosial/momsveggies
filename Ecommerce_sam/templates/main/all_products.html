@@ -434,7 +434,7 @@ height: 80px;
         <span class="ast-woo-product-category">
 {{item.category.name}}
         </span>
-<a href="product/assorted-coffee/index.html" class="ast-loop-product__link">
+<a href="#" class="ast-loop-product__link">
     <h2 class="woocommerce-loop-product__title">{{item.name}}</h2>
 </a>
 <span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rs. </span>{{item.selling_cost}}/{{item.selling_unit}}</span></span>
@@ -494,31 +494,24 @@ height: 80px;
 
 
 
-<!--                <div class="pagination">-->
-<!--    <span class="step-links">-->
-<!--         if lead_list.has_previous -->
-<!--            <a class="btn btn-primary" href="?page=1">&laquo; first</a>-->
-<!--            <a class="btn btn-primary" href="?page={ all_products.previous_page_number }">previous</a>-->
-<!--         endif -->
-
-<!--    </span>-->
-<!--            </div>-->
-
     <nav class="woocommerce-pagination">
         <ul class='page-numbers'>
-        {% if products_list.has_previous %}
-            <a class="btn btn-primary" href="?page=1">&laquo; first</a>
-            <a class="btn btn-primary" href="?page={{ all_products.previous_page_number }}">previous</a>
+        {% if all_products.has_previous %}
+           <li> <a class="btn " href="?page=1">&laquo; first</a></li>
+          <li>  <a class="btn " href="?page={{ all_products.previous_page_number }}">previous</a></li>
         {% endif %}
 
          <li><span aria-current="page" class="page-numbers current">{{ all_products.number }} / {{ all_products.paginator.num_pages }}</span></li>
 
-        {% if products_list.has_next %}
-            <a class="btn btn-primary" href="?page={{ all_products.next_page_number }}">&rarr;</a>
-            <a class="btn btn-primary" href="?page={{ all_products.paginator.num_pages }}">last &raquo;</a>
+        {% if all_products.has_next %}
+            <li><a class="btn " href="?page={{ all_products.next_page_number }}">&rarr;</a></li>
+            <li><a class="btn " href="?page={{ all_products.paginator.num_pages }}">last &raquo;</a></li>
         {% endif %}
         </ul>
     </nav>
+
+
+
 </main>
 </div>
 </div>
