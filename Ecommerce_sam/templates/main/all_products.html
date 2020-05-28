@@ -321,7 +321,7 @@ input[type=number]::-webkit-outer-spin-button {
 </div>
     <center>
             <select name="orderby_cat" onchange="choice5(this)" class="orderby form-control" aria-label="Shop order" style="padding:0px; width: 250px; font-size: 15px;">
-            <option value="0" selected='selected' style="font-size: 15px;">All Category</option>
+            <option value="0" selected='selected' style="font-size: 15px;">All </option>
 
             {% for item in allcategories %}
         <option value="{{item.id}}" style="font-size: 15px;">{{item.name}}</option>
@@ -494,15 +494,15 @@ height: 80px;
 
 
 
-                <div class="pagination">
-    <span class="step-links">
-        {% if lead_list.has_previous %}
-            <a class="btn btn-primary" href="?page=1">&laquo; first</a>
-            <a class="btn btn-primary" href="?page={{ all_products.previous_page_number }}">previous</a>
-        {% endif %}
+<!--                <div class="pagination">-->
+<!--    <span class="step-links">-->
+<!--         if lead_list.has_previous -->
+<!--            <a class="btn btn-primary" href="?page=1">&laquo; first</a>-->
+<!--            <a class="btn btn-primary" href="?page={ all_products.previous_page_number }">previous</a>-->
+<!--         endif -->
 
-    </span>
-            </div>
+<!--    </span>-->
+<!--            </div>-->
 
     <nav class="woocommerce-pagination">
         <ul class='page-numbers'>
