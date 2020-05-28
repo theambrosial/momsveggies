@@ -506,14 +506,14 @@ height: 80px;
 
     <nav class="woocommerce-pagination">
         <ul class='page-numbers'>
-        {% if lead_list.has_previous %}
+        {% if products_list.has_previous %}
             <a class="btn btn-primary" href="?page=1">&laquo; first</a>
             <a class="btn btn-primary" href="?page={{ all_products.previous_page_number }}">previous</a>
         {% endif %}
 
          <li><span aria-current="page" class="page-numbers current">{{ all_products.number }} / {{ all_products.paginator.num_pages }}</span></li>
 
-        {% if lead_list.has_next %}
+        {% if products_list.has_next %}
             <a class="btn btn-primary" href="?page={{ all_products.next_page_number }}">&rarr;</a>
             <a class="btn btn-primary" href="?page={{ all_products.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
