@@ -153,7 +153,7 @@ EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'vikas.pandey9323@gmail.com'
 EMAIL_HOST_USER = 'harshkumarpathak01@gmail.com'
 # EMAIL_HOST_PASSWORD = '#Vikas@@7786'
-EMAIL_HOST_PASSWORD = 'ipv6netuser'
+EMAIL_HOST_PASSWORD = 'Benzocaine101'
 
 KEY_ID_RAZORPAY="rzp_test_Pma8Ps4jKf2lyp"
 KEY_SECRET_RAZORPAY="dpBuImsWN9tJPlddRzR5Grno"

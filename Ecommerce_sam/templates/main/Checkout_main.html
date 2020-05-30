@@ -94,7 +94,7 @@
 </form>
 <div class="woocommerce-notices-wrapper"></div>
 
-<form name="checkout" method="post" class="checkout woocommerce-checkout" action="/payment" enctype="multipart/form-data">{% csrf_token %}
+<form name="checkout" method="post" class="checkout woocommerce-checkout" onsubmit="return isOneChecked();" action="/payment" enctype="multipart/form-data">{% csrf_token %}
 
 
 
@@ -431,8 +431,8 @@
    </span> -->
 </p>
 <p class="form-row form-row-wide address-field validate-required validate-postcode" id="billing_postcode_field" data-priority="90" data-o_class="form-row form-row-wide address-field validate-required validate-postcode"><label for="billing_postcode" class="">Postcode / ZIP&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_postcode" id="billing_postcode" placeholder="" value="" autocomplete="postal-code"></span></p>
-<p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Phone&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input required type="tel" onkeypress="return isNumber(event)" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="{{user.mobile}}" autocomplete="tel"></span></p>
-<p class="form-row form-row-wide validate-required validate-email" id="billing_email_field" data-priority="110"><label for="billing_email" class="">Email address&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input required type="email" class="input-text " name="billing_email" id="billing_email" placeholder="" value="{{user.email}}" autocomplete="email username"></span></p>
+<p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Phone&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input required type="tel" {% if user.is_authenticated %} readonly {% endif %} onkeypress="return isNumber(event)" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="{{user.mobile}}" autocomplete="tel"></span></p>
+<p class="form-row form-row-wide validate-required validate-email" id="billing_email_field" data-priority="110"><label for="billing_email" class="">Email address&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input required type="email" {% if user.is_authenticated %} readonly {% endif %} class="input-text " name="billing_email" id="billing_email" placeholder="" value="{{user.email}}" autocomplete="email username"></span></p>
 </div>
 
 	</div>
@@ -593,7 +593,20 @@
 
 	</div><!-- #page -->
 
+<script>
+	function isOneChecked() {
 
+  var chx = document.getElementById('billing_phone').value;
+
+    if (chx.length != 10 ) {
+    alert("Phone Number Invalid!!!");
+      return false;
+    }
+    else{
+   return true;
+}
+}
+</script>
 
 
 </body></html>
