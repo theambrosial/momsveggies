@@ -76,6 +76,7 @@
 				<th class="product-price">Price</th>
 				<th class="product-quantity">Quantity</th>
 				<th class="product-subtotal">Subtotal</th>
+				<th class="product-subtotal"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -102,13 +103,22 @@
 				<td class="product-quantity" data-title="Quantity">
 					<div class="quantity">
 						<label class="screen-reader-text" for="quantity_5eba32b74e120">{{item.product.name}} quantity</label>
-						<input type="number" id="quantity_5eba32b74e120" class="input-text qty text" step="1" min="0" max="" name="cart[006f52e9102a8d3be2fe5614f42ba989][qty]" value="{{item.product_quantity}}" title="Qty" size="4" placeholder="" inputmode="numeric">
+						<input type="number" id="quantity_5eba32b74e120" readonly class="input-text qty text"name="cart[006f52e9102a8d3be2fe5614f42ba989][qty]" value="{{item.product_quantity}}" title="Qty" size="4" placeholder="" inputmode="numeric">
 					</div>
 				</td>
 
 				<td class="product-subtotal" data-title="Subtotal">
 				<span class="woocommerce-Price-amount amount">
 					<span class="woocommerce-Price-currencySymbol">Rs.</span>{{item.product_cost}}</span>
+				</td>
+
+								<td class="product-subtotal" data-title="To update cart value, please click the below link" style="padding: 0px;"><center>
+				<span class="woocommerce-Price-amount amount" style="padding: 0px;">
+
+				<a href="../#allproducts">	<span class="checkout-button button alt wc-forward" type="link" style="font-size: 18px;">Update Cart</span></a>
+
+
+				</span></center>
 				</td>
 
 			</tr>
