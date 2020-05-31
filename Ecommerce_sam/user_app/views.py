@@ -68,26 +68,35 @@ def account(request):
         return render(request,'main/account.html',context)
     else:
         if request.method == 'POST':
+            print(request.POST)
+            if 'username' in request.POST :
+                username = request.POST.get('username')
+                password = request.POST.get('password')
 
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+                # Logging User In System
+                user = authenticate(request, mobile=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    next = request.GET.get('next', '/')
+                    if not is_safe_url(next, allowed_hosts=None):
+                        next = '/'
+                    return redirect(next)
+                    # return redirect('/account/')
+                else:
 
-            # Logging User In System
-            user = authenticate(request, mobile=username, password=password)
-            if user is not None:
-                login(request, user)
-                next = request.GET.get('next', '/')
-                if not is_safe_url(next, allowed_hosts=None):
-                    next = '/'
-                return redirect(next)
-                # return redirect('/account/')
-            else:
+                    context = {
+                        'does_not_exist_user': True,
+                        'cart_objs': None,
+                    }
+                    return render(request, 'main/account.html', context)
 
-                context = {
-                    'does_not_exist_user': True,
-                    'cart_objs': None,
-                }
-                return render(request, 'main/account.html', context)
+            if 'fname' in request.POST:
+                fname = request.POST.get('fname')
+                lname = request.POST.get('lname')
+                email = request.POST.get('email')
+
+                SiteUser.objects.filter(id=request.user.pk).update(first_name=fname,last_name=lname,email=email)
+                print("hhihihihihih")
 
         context = {
             'cart_objs': None,
