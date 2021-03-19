@@ -1,6 +1,6 @@
 certifi==2020.4.5.1
 chardet==3.0.4
-Django==2.2.10
+Django==2.2.18
 django-cors-headers==2.2.0
 django-jet==1.0.8
 google-api-python-client==1.4.1
